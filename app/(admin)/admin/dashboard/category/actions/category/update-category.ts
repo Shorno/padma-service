@@ -29,7 +29,7 @@ export default async function updateCategory(data: UpdateCategoryFormValues) {
                 name: data.name,
                 slug: data.slug,
                 image: data.image,
-                logo: data.logo || null,
+                logo: data.logo,
                 isActive: data.isActive,
                 displayOrder: data.displayOrder,
                 updatedAt: new Date(),
@@ -37,7 +37,7 @@ export default async function updateCategory(data: UpdateCategoryFormValues) {
             .where(eq(category.id, data.id))
 
         // Revalidate only client-facing routes (not admin dashboard)
-        revalidatePath("/products")
+        revalidatePath("/services")
         revalidatePath("/")
 
         return {
