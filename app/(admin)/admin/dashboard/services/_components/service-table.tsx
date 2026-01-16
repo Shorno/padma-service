@@ -14,6 +14,9 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 
+import Link from "next/link"
+import { Plus } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -24,7 +27,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import NewServiceDialog from "@/app/(admin)/admin/dashboard/services/_components/new-service-dialog"
 import { useTranslations } from "next-intl"
 
 interface DataTableProps<TData, TValue> {
@@ -73,7 +75,12 @@ export default function ServiceTable<TData, TValue>({
                     }
                     className="max-w-sm"
                 />
-                <NewServiceDialog />
+                <Button asChild>
+                    <Link href="/admin/dashboard/services/new">
+                        <Plus className="h-4 w-4 mr-2" />
+                        New Service
+                    </Link>
+                </Button>
             </div>
             <div className="rounded-md border">
                 <Table>
