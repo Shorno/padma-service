@@ -14,7 +14,7 @@ export default function Navbar() {
     return (
         <nav className="flex flex-col">
             {/* Main navbar content */}
-            <div className="bg-navbar-primary py-3 min-h-30">
+            <div className="bg-navbar-primary pt-3 pb-0 min-h-30">
                 <div className="container mx-auto px-2 sm:px-4 lg:px-8">
                     <div className="flex items-center justify-between gap-2 sm:gap-4">
                         {/* Left Section: Logo and Contact */}
@@ -196,16 +196,16 @@ export default function Navbar() {
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {/* White curved bottom */}
-            <div
-                className="w-full bg-navbar-light"
-                style={{
-                    height: 'var(--navbar-curve-height)',
-                    borderRadius: 'var(--navbar-radius-curve) var(--navbar-radius-curve) 0 0'
-                }}
-            />
+                {/* White curved bottom section */}
+                <div
+                    className="w-full bg-navbar-light mt-4"
+                    style={{
+                        height: 'var(--navbar-curve-height)',
+                        borderRadius: 'var(--navbar-radius-curve) var(--navbar-radius-curve) 0 0'
+                    }}
+                />
+            </div>
         </nav>
     );
 }
