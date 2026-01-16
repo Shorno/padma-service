@@ -12,7 +12,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {ListIcon, ShoppingBagIcon, SlidersIcon, TimerIcon, WarehouseIcon} from "lucide-react";
+import {ListIcon, ShoppingBagIcon, WarehouseIcon} from "lucide-react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import {authClient} from "@/lib/auth-client";
@@ -20,16 +20,10 @@ import UserNavSkeleton from "@/components/dashboard/user-nav-skeleton";
 
 const navLinks = {
     navMain: [
-
         {
-            title: "Orders",
-            url: "/admin/dashboard/orders",
+            title: "Dashboard",
+            url: "/admin/dashboard/",
             icon: ShoppingBagIcon,
-        },
-        {
-            title: "Payments",
-            url: "/admin/dashboard/payments",
-            icon: TimerIcon,
         },
         {
             title: "Products",
@@ -40,11 +34,6 @@ const navLinks = {
             title: "Category",
             url: "/admin/dashboard/category",
             icon: WarehouseIcon,
-        },
-        {
-            title: "Featured",
-            url: "/admin/dashboard/featured",
-            icon: SlidersIcon,
         },
     ],
 

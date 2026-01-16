@@ -10,17 +10,12 @@ const nextConfig: NextConfig = {
         return [
             {
                 source: "/admin",
-                destination: "/admin/dashboard/orders",
-                permanent: false,
-            },
-            {
-                source: "/admin/dashboard",
-                destination: "/admin/dashboard/orders",
+                destination: "/admin/dashboard/",
                 permanent: false,
             },
             {
                 source: "/dashboard",
-                destination: "/admin/dashboard/orders",
+                destination: "/admin/dashboard/",
                 permanent: false,
             },
 
