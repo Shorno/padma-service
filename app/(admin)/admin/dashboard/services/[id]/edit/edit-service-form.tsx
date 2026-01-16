@@ -14,12 +14,12 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { TiptapEditor } from "@/components/tiptap-editor"
-import { createServiceSchema } from "@/lib/schemas/service.schema"
+import { updateServiceSchema } from "@/lib/schemas/service.schema"
 import { Switch } from "@/components/ui/switch"
 import ImageUploader from "@/components/ImageUploader"
 import { generateSlug } from "@/utils/generate-slug"
 import { useState } from "react"
-import createService from "@/app/(admin)/admin/dashboard/services/actions/create-service"
+import updateService from "@/app/(admin)/admin/dashboard/services/actions/update-service"
 import {
     Select,
     SelectContent,
@@ -31,17 +31,22 @@ import { useCategories, useSubCategories } from "@/hooks/use-categories"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Separator } from "@/components/ui/separator"
 import { Label } from "@/components/ui/label"
+import { ServiceWithRelations } from "../../_components/service-columns"
 
-export default function NewServiceForm() {
+interface EditServiceFormProps {
+    service: ServiceWithRelations
+}
+
+export default function EditServiceForm({ service }: EditServiceFormProps) {
     const router = useRouter()
-    const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
+    const [selectedCategory, setSelectedCategory] = useState<number>(service.categoryId)
     const queryClient = useQueryClient()
 
     const { data: categories = [] } = useCategories()
     const subCategories = useSubCategories(selectedCategory)
 
     const mutation = useMutation({
-        mutationFn: createService,
+        mutationFn: updateService,
         onSuccess: (result) => {
             if (!result.success) {
                 switch (result.status) {
@@ -53,6 +58,9 @@ export default function NewServiceForm() {
                     case 401:
                         toast.error("You are not authorized to perform this action.")
                         break
+                    case 404:
+                        toast.error("Service not found.")
+                        break
                     default:
                         toast.error(result.error || "Something went wrong.")
                 }
@@ -63,32 +71,29 @@ export default function NewServiceForm() {
             router.push("/admin/dashboard/services")
         },
         onError: () => {
-            toast.error("An unexpected error occurred while creating the service.")
+            toast.error("An unexpected error occurred while updating the service.")
         },
     })
 
     const form = useForm({
         defaultValues: {
-            name: "",
-            slug: "",
-            description: "",
-            categoryId: undefined as number | undefined,
-            subCategoryId: undefined as number | undefined,
-            image: "",
-            additionalImages: [] as string[],
-            isPublished: true,
-            isFeatured: false,
+            id: service.id,
+            name: service.name,
+            slug: service.slug,
+            description: service.description ?? "",
+            categoryId: service.categoryId,
+            subCategoryId: service.subCategoryId ?? undefined as number | undefined,
+            image: service.image,
+            additionalImages: service.images?.map(img => img.imageUrl) || [] as string[],
+            isPublished: service.isPublished,
+            isFeatured: service.isFeatured,
         },
         validators: {
             //@ts-ignore
-            onSubmit: createServiceSchema,
+            onSubmit: updateServiceSchema,
         },
         onSubmit: async ({ value }) => {
-            // Schema validation ensures categoryId is defined at this point
-            mutation.mutate({
-                ...value,
-                categoryId: value.categoryId!,
-            })
+            mutation.mutate(value)
         },
     })
 
@@ -109,7 +114,7 @@ export default function NewServiceForm() {
                             </Link>
                         </Button>
                         <div>
-                            <h1 className="text-sm sm:text-lg font-semibold truncate max-w-[150px] sm:max-w-none">Create New Service</h1>
+                            <h1 className="text-sm sm:text-lg font-semibold truncate max-w-[150px] sm:max-w-none">Edit Service</h1>
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -125,19 +130,19 @@ export default function NewServiceForm() {
                         </Button>
                         <Button
                             type="submit"
-                            form="service-form"
+                            form="edit-service-form"
                             size="sm"
                             disabled={mutation.isPending}
                         >
                             {mutation.isPending && <Loader className="mr-2 h-4 w-4 animate-spin" />}
-                            Publish
+                            Update
                         </Button>
                     </div>
                 </div>
             </header>
 
             <form
-                id="service-form"
+                id="edit-service-form"
                 onSubmit={(e) => {
                     e.preventDefault()
                     e.stopPropagation()
@@ -166,7 +171,7 @@ export default function NewServiceForm() {
                                             aria-invalid={isInvalid}
                                             placeholder="Enter service title..."
                                             autoComplete="off"
-                                            className="text-2xl  font-semibold h-auto py-3 border-0 border-b rounded-none focus-visible:ring-0 focus-visible:border-primary px-2"
+                                            className="text-2xl font-semibold h-auto py-3 border-0 border-b rounded-none focus-visible:ring-0 focus-visible:border-primary px-2"
                                         />
                                         {isInvalid && (
                                             <FieldError errors={field.state.meta.errors} />
@@ -267,7 +272,7 @@ export default function NewServiceForm() {
                                         <Field data-invalid={isInvalid}>
                                             <Label className="text-xs text-muted-foreground">Category</Label>
                                             <Select
-                                                value={field.state.value ? field.state.value.toString() : undefined}
+                                                value={field.state.value?.toString()}
                                                 onValueChange={(value) => {
                                                     const numValue = parseInt(value)
                                                     field.handleChange(numValue)
