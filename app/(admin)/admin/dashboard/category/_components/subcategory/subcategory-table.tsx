@@ -13,9 +13,11 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
+import Link from "next/link"
+import { Plus } from "lucide-react"
 
-import {Button} from "@/components/ui/button"
-import {Input} from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import {
     Table,
     TableBody,
@@ -24,7 +26,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import NewSubcategoryDialog from "@/app/(admin)/admin/dashboard/category/_components/subcategory/new-subcategory-dialog"
 import { useQuery } from "@tanstack/react-query"
 import getSubcategories from "@/app/(admin)/admin/dashboard/category/actions/subcategory/get-subcategories"
 import TableSkeleton from "@/app/(admin)/admin/dashboard/category/_components/table-skeleton"
@@ -36,10 +37,10 @@ interface DataTableProps<TData, TValue> {
 }
 
 export default function SubcategoryTable<TData, TValue>({
-                                                            columns,
-                                                            categoryId,
-                                                            categoryName,
-                                                        }: DataTableProps<TData, TValue>) {
+    columns,
+    categoryId,
+    categoryName,
+}: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -84,10 +85,12 @@ export default function SubcategoryTable<TData, TValue>({
                     }
                     className="max-w-sm"
                 />
-                <NewSubcategoryDialog
-                    categoryId={categoryId}
-                    categoryName={categoryName}
-                />
+                <Button asChild>
+                    <Link href={`/admin/dashboard/category/${categoryId}/subcategory/new`}>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Subcategory
+                    </Link>
+                </Button>
             </div>
             <div className="rounded-md border">
                 <Table>

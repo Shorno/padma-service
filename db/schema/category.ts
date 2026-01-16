@@ -1,4 +1,4 @@
-import { integer, pgTable, serial, varchar, boolean } from "drizzle-orm/pg-core";
+import { integer, pgTable, serial, varchar, boolean, text } from "drizzle-orm/pg-core";
 import { timestamps } from "@/db/schema/columns.helpers";
 import { relations } from "drizzle-orm";
 
@@ -16,6 +16,8 @@ export const category = pgTable("category", {
 export const subCategory = pgTable("sub_category", {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 100 }).notNull(),
+    header: varchar("header", { length: 255 }),
+    description: text("description"),
     slug: varchar("slug", { length: 100 }).notNull().unique(),
     categoryId: integer("category_id")
         .notNull()
@@ -31,11 +33,12 @@ export const categoryRelations = relations(category, ({ many }) => ({
     subCategory: many(subCategory)
 }))
 
-export const subCategoryRelations = relations(subCategory, ({ one }) => ({
+export const subCategoryRelations = relations(subCategory, ({ one, many }) => ({
     category: one(category, {
         fields: [subCategory.categoryId],
         references: [category.id]
-    })
+    }),
+    // Carousels relation will be defined in subcategory-carousel.ts to avoid circular imports
 }))
 
 

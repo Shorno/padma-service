@@ -1,13 +1,15 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -134,6 +136,12 @@ export const subcategoryColumns: ColumnDef<SubCategory>[] = [
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                            <DropdownMenuItem asChild>
+                                <Link href={`/admin/dashboard/category/${subcategory.categoryId}/subcategory/${subcategory.id}/edit`}>
+                                    <Pencil className="h-4 w-4 mr-2" />
+                                    Edit Details
+                                </Link>
+                            </DropdownMenuItem>
                             <EditSubcategoryDialog subcategory={subcategory} />
                             <DropdownMenuSeparator />
                             <DeleteSubcategoryDialog subcategory={subcategory} />

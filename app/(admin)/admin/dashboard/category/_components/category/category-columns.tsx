@@ -1,8 +1,9 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, ChevronRight, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, ChevronDown, ChevronRight, MoreHorizontal, Plus } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -13,7 +14,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
 import { Category, SubCategory } from "@/db/schema/category"
-import NewSubcategoryDialog from "../subcategory/new-subcategory-dialog"
 import EditCategoryDialog from "@/app/(admin)/admin/dashboard/category/_components/category/edit-category-dialog";
 import DeleteCategoryDialog from "@/app/(admin)/admin/dashboard/category/_components/category/delete-category-dialog";
 import { useTranslations } from "next-intl"
@@ -138,10 +138,12 @@ export function useCategoryColumns() {
                         <Badge variant="outline" className="font-normal">
                             {count} {count === 1 ? 'subcategory' : 'subcategories'}
                         </Badge>
-                        <NewSubcategoryDialog
-                            categoryId={category.id}
-                            categoryName={category.name}
-                        />
+                        <Button asChild size="sm" variant="outline">
+                            <Link href={`/admin/dashboard/category/${category.id}/subcategory/new`}>
+                                <Plus className="h-3 w-3 mr-1" />
+                                Add
+                            </Link>
+                        </Button>
                     </div>
                 )
             },

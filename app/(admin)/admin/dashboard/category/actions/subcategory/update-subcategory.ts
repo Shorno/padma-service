@@ -26,6 +26,8 @@ export default async function updateSubcategory(data: UpdateSubcategoryFormValue
             .update(subCategory)
             .set({
                 name: data.name,
+                header: data.header || null,
+                description: data.description || null,
                 slug: data.slug,
                 image: data.image,
                 logo: data.logo,

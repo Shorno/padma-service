@@ -2,7 +2,8 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { ChevronDown, ChevronRight, MoreHorizontal } from "lucide-react"
+import Link from "next/link"
+import { ChevronDown, ChevronRight, MoreHorizontal, Plus } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -20,7 +21,6 @@ import {
 import { CategoryWithSubcategories } from "./category-columns"
 import EditCategoryDialog from "./edit-category-dialog"
 import DeleteCategoryDialog from "./delete-category-dialog"
-import NewSubcategoryDialog from "../subcategory/new-subcategory-dialog"
 import SubcategoryExpandedRow from "../subcategory/subcategory-expanded-row"
 
 interface CategoryCardProps {
@@ -95,10 +95,12 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                                 <span className="text-sm text-muted-foreground">
                                     {category.subCategory.length} subcategories
                                 </span>
-                                <NewSubcategoryDialog
-                                    categoryId={category.id}
-                                    categoryName={category.name}
-                                />
+                                <Button asChild size="sm" variant="outline">
+                                    <Link href={`/admin/dashboard/category/${category.id}/subcategory/new`}>
+                                        <Plus className="h-3 w-3 mr-1" />
+                                        Add
+                                    </Link>
+                                </Button>
                             </div>
                             <SubcategoryExpandedRow category={category} />
                         </div>
