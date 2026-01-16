@@ -1,30 +1,30 @@
 "use server"
 
-import {CreateCategoryFormValues, createCategorySchema} from "@/lib/schemas/category.scheam";
-import {z} from "zod";
-import {db} from "@/db/config";
-import {category} from "@/db/schema/category";
-import {revalidatePath} from "next/cache";
-import {checkAuth} from "@/app/actions/auth/checkAuth";
+import { CreateCategoryFormValues, createCategorySchema } from "@/lib/schemas/category.scheam";
+import { z } from "zod";
+import { db } from "@/db/config";
+import { category, Category } from "@/db/schema/category";
+import { revalidatePath } from "next/cache";
+import { checkAuth } from "@/app/actions/auth/checkAuth";
 
 
 export type ActionResult<TData = unknown> =
     | {
-    success: true
-    status: number
-    data: TData
-    message?: string
-}
+        success: true
+        status: number
+        data: TData
+        message?: string
+    }
     | {
-    success: false
-    status: number
-    error: string
-    details?: unknown
-}
+        success: false
+        status: number
+        error: string
+        details?: unknown
+    }
 
 export default async function createCategory(
     formData: CreateCategoryFormValues
-): Promise<ActionResult<CreateCategoryFormValues>> {
+): Promise<ActionResult<Category>> {
     const session = await checkAuth()
 
     if (!session?.user || session?.user.role !== "admin") {

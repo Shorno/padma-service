@@ -7,7 +7,7 @@ export const category = pgTable("category", {
     name: varchar("name", { length: 100 }).notNull(),
     slug: varchar("slug", { length: 100 }).notNull().unique(),
     image: varchar("image", { length: 255 }).notNull(),
-    logo: varchar("logo", { length: 255 }),
+    logo: varchar("logo", { length: 255 }).notNull(),
     isActive: boolean("is_active").default(true).notNull(),
     displayOrder: integer("display_order").default(0).notNull(),
     ...timestamps
@@ -21,7 +21,7 @@ export const subCategory = pgTable("sub_category", {
         .notNull()
         .references(() => category.id, { onDelete: "cascade" }),
     image: varchar("image", { length: 255 }).notNull(),
-    logo: varchar("logo", { length: 255 }),
+    logo: varchar("logo", { length: 255 }).notNull(),
     isActive: boolean("is_active").default(true).notNull(),
     displayOrder: integer("display_order").default(0).notNull(),
     ...timestamps
