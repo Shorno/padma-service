@@ -1,10 +1,10 @@
 "use server"
 
-import {subCategory} from "@/db/schema/category"
-import {eq} from "drizzle-orm"
-import {UpdateSubcategoryFormValues} from "@/lib/schemas/category.scheam";
-import {db} from "@/db/config";
-import {revalidatePath} from "next/cache";
+import { subCategory } from "@/db/schema/category"
+import { eq } from "drizzle-orm"
+import { UpdateSubcategoryFormValues } from "@/lib/schemas/category.scheam";
+import { db } from "@/db/config";
+import { revalidatePath } from "next/cache";
 
 export default async function updateSubcategory(data: UpdateSubcategoryFormValues) {
     try {
@@ -28,6 +28,7 @@ export default async function updateSubcategory(data: UpdateSubcategoryFormValue
                 name: data.name,
                 slug: data.slug,
                 image: data.image,
+                logo: data.logo || null,
                 isActive: data.isActive,
                 displayOrder: data.displayOrder,
                 updatedAt: new Date(),

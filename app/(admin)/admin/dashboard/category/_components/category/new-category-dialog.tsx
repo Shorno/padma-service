@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import {useForm} from "@tanstack/react-form"
-import {toast} from "sonner"
+import { useForm } from "@tanstack/react-form"
+import { toast } from "sonner"
 
-import {Button} from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,
@@ -21,14 +21,14 @@ import {
     FieldError,
     FieldLabel,
 } from "@/components/ui/field"
-import {Input} from "@/components/ui/input"
-import {createCategorySchema} from "@/lib/schemas/category.scheam"
-import {Switch} from "@/components/ui/switch"
+import { Input } from "@/components/ui/input"
+import { createCategorySchema } from "@/lib/schemas/category.scheam"
+import { Switch } from "@/components/ui/switch"
 import ImageUploader from "@/components/ImageUploader"
-import {generateSlug} from "@/utils/generate-slug"
+import { generateSlug } from "@/utils/generate-slug"
 import createCategory from "@/app/(admin)/admin/dashboard/category/actions/category/create-category"
-import {Loader} from "lucide-react"
-import {useMutation, useQueryClient} from "@tanstack/react-query"
+import { Loader } from "lucide-react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 export default function NewCategoryDialog() {
     const [open, setOpen] = React.useState(false)
@@ -52,7 +52,7 @@ export default function NewCategoryDialog() {
                 }
                 return
             }
-            queryClient.invalidateQueries({queryKey: ["admin-categories"]})
+            queryClient.invalidateQueries({ queryKey: ["admin-categories"] })
             toast.success(result.message)
             form.reset()
             setOpen(false)
@@ -67,6 +67,7 @@ export default function NewCategoryDialog() {
             name: "",
             slug: "",
             image: "",
+            logo: "",
             isActive: true,
             displayOrder: 0,
         },
@@ -74,7 +75,7 @@ export default function NewCategoryDialog() {
         validators: {
             onSubmit: createCategorySchema,
         },
-        onSubmit: async ({value}) => {
+        onSubmit: async ({ value }) => {
             mutation.mutate(value)
         },
     })
@@ -105,90 +106,124 @@ export default function NewCategoryDialog() {
                     }}
                     className="space-y-4"
                 >
-                    {/* Image Uploader */}
+                    {/* Banner Image Uploader */}
                     <form.Field name="image">
                         {(field) => {
                             const isInvalid =
                                 field.state.meta.isTouched && !field.state.meta.isValid
                             return (
                                 <Field data-invalid={isInvalid}>
-                                    <FieldLabel htmlFor={field.name}>Category Image</FieldLabel>
+                                    <FieldLabel htmlFor={field.name}>Category Banner *</FieldLabel>
                                     <ImageUploader
                                         value={field.state.value}
                                         onChange={field.handleChange}
-                                        folder="categories"
+                                        folder="categories/banners"
                                         maxSizeMB={5}
                                     />
                                     <FieldDescription>
-                                        Upload an image (max 5MB)
+                                        Upload a banner image (max 5MB)
                                     </FieldDescription>
                                     {isInvalid && (
-                                        <FieldError errors={field.state.meta.errors}/>
+                                        <FieldError errors={field.state.meta.errors} />
                                     )}
                                 </Field>
                             )
                         }}
                     </form.Field>
 
-                    {/* Category Name */}
-                    <form.Field name="name">
-                        {(field) => {
-                            const isInvalid =
-                                field.state.meta.isTouched && !field.state.meta.isValid
-                            return (
-                                <Field data-invalid={isInvalid}>
-                                    <FieldLabel htmlFor={field.name}>
-                                        Category Name *
-                                    </FieldLabel>
-                                    <Input
-                                        id={field.name}
-                                        name={field.name}
-                                        value={field.state.value}
-                                        onBlur={field.handleBlur}
-                                        onChange={(e) => {
-                                            field.handleChange(e.target.value)
-                                            autoGenerateSlugFromName(e.target.value)
-                                        }}
-                                        aria-invalid={isInvalid}
-                                        placeholder="Electronics"
-                                        autoComplete="off"
-                                    />
-                                    {isInvalid && (
-                                        <FieldError errors={field.state.meta.errors}/>
-                                    )}
-                                </Field>
-                            )
-                        }}
-                    </form.Field>
+                    {/* Two Column Layout: Logo + Name/Slug */}
+                    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-4 items-start">
+                        {/* Logo Uploader */}
+                        <form.Field name="logo">
+                            {(field) => {
+                                const isInvalid =
+                                    field.state.meta.isTouched && !field.state.meta.isValid
+                                return (
+                                    <Field data-invalid={isInvalid}>
+                                        <FieldLabel htmlFor={field.name}>Logo</FieldLabel>
+                                        <div className="w-32!">
+                                            <ImageUploader
+                                                value={field.state.value ?? ""}
+                                                onChange={field.handleChange}
+                                                folder="categories/logos"
+                                                maxSizeMB={2}
+                                                compact={true}
+                                            />
+                                        </div>
+                                        <FieldDescription>
+                                            Optional
+                                        </FieldDescription>
+                                        {isInvalid && (
+                                            <FieldError errors={field.state.meta.errors} />
+                                        )}
+                                    </Field>
+                                )
+                            }}
+                        </form.Field>
 
-                    {/* Slug */}
-                    <form.Field name="slug">
-                        {(field) => {
-                            const isInvalid =
-                                field.state.meta.isTouched && !field.state.meta.isValid
-                            return (
-                                <Field data-invalid={isInvalid}>
-                                    <FieldLabel htmlFor={field.name}>Slug *</FieldLabel>
-                                    <Input
-                                        id={field.name}
-                                        name={field.name}
-                                        value={field.state.value}
-                                        onBlur={field.handleBlur}
-                                        onChange={(e) => field.handleChange(e.target.value)}
-                                        aria-invalid={isInvalid}
-                                        placeholder="electronics"
-                                        autoComplete="off"
-                                    />
-                                    <FieldDescription>
-                                        URL-friendly version of the name.
-                                    </FieldDescription>
-                                    {isInvalid && (
-                                        <FieldError errors={field.state.meta.errors}/>
-                                    )}
-                                </Field>
-                            )
-                        }}
-                    </form.Field>
+                        {/* Name and Slug Fields */}
+                        <div className="flex flex-col justify-between gap-2 self-stretch">
+                            {/* Category Name */}
+                            <form.Field name="name">
+                                {(field) => {
+                                    const isInvalid =
+                                        field.state.meta.isTouched && !field.state.meta.isValid
+                                    return (
+                                        <Field data-invalid={isInvalid}>
+                                            <FieldLabel htmlFor={field.name}>
+                                                Category Name *
+                                            </FieldLabel>
+                                            <Input
+                                                id={field.name}
+                                                name={field.name}
+                                                value={field.state.value}
+                                                onBlur={field.handleBlur}
+                                                onChange={(e) => {
+                                                    field.handleChange(e.target.value)
+                                                    autoGenerateSlugFromName(e.target.value)
+                                                }}
+                                                aria-invalid={isInvalid}
+                                                placeholder="Electronics"
+                                                autoComplete="off"
+                                            />
+                                            {isInvalid && (
+                                                <FieldError errors={field.state.meta.errors} />
+                                            )}
+                                        </Field>
+                                    )
+                                }}
+                            </form.Field>
+
+                            {/* Slug */}
+                            <form.Field name="slug">
+                                {(field) => {
+                                    const isInvalid =
+                                        field.state.meta.isTouched && !field.state.meta.isValid
+                                    return (
+                                        <Field data-invalid={isInvalid}>
+                                            <FieldLabel htmlFor={field.name}>Slug *</FieldLabel>
+                                            <Input
+                                                id={field.name}
+                                                name={field.name}
+                                                value={field.state.value}
+                                                onBlur={field.handleBlur}
+                                                onChange={(e) => field.handleChange(e.target.value)}
+                                                aria-invalid={isInvalid}
+                                                placeholder="electronics"
+                                                autoComplete="off"
+                                            />
+                                            <FieldDescription>
+                                                URL-friendly version of the name.
+                                            </FieldDescription>
+                                            {isInvalid && (
+                                                <FieldError errors={field.state.meta.errors} />
+                                            )}
+                                        </Field>
+                                    )
+                                }}
+                            </form.Field>
+                        </div>
+                    </div>
 
                     {/* Display Order */}
                     <form.Field name="displayOrder">
@@ -216,7 +251,7 @@ export default function NewCategoryDialog() {
                                         Lower numbers appear first
                                     </FieldDescription>
                                     {isInvalid && (
-                                        <FieldError errors={field.state.meta.errors}/>
+                                        <FieldError errors={field.state.meta.errors} />
                                     )}
                                 </Field>
                             )
@@ -257,7 +292,7 @@ export default function NewCategoryDialog() {
                         disabled={mutation.isPending}
                     >
                         {mutation.isPending && (
-                            <Loader className="mr-2 h-4 w-4 animate-spin"/>
+                            <Loader className="mr-2 h-4 w-4 animate-spin" />
                         )}
                         Create Category
                     </Button>

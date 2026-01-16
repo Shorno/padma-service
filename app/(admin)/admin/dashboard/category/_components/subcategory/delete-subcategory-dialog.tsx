@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import {toast} from "sonner"
-import {Trash2} from "lucide-react"
+import { toast } from "sonner"
+import { Trash2 } from "lucide-react"
 
-import {Button} from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -16,16 +16,17 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import {Loader} from "lucide-react"
+import { Loader } from "lucide-react"
 import deleteSubcategory from "@/app/(admin)/admin/dashboard/category/actions/subcategory/delete-subcategory"
-import {SubCategory} from "@/db/schema"
+import { SubCategory } from "@/db/schema"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 interface DeleteSubcategoryDialogProps {
     subcategory: SubCategory
+    trigger?: React.ReactNode
 }
 
-export default function DeleteSubcategoryDialog({subcategory}: DeleteSubcategoryDialogProps) {
+export default function DeleteSubcategoryDialog({ subcategory, trigger }: DeleteSubcategoryDialogProps) {
     const [open, setOpen] = React.useState(false)
     const queryClient = useQueryClient()
 
@@ -46,6 +47,7 @@ export default function DeleteSubcategoryDialog({subcategory}: DeleteSubcategory
                 return
             }
             queryClient.invalidateQueries({ queryKey: ['admin-subcategories', subcategory.categoryId] })
+            queryClient.invalidateQueries({ queryKey: ['admin-categories'] })
             toast.success(result.message)
             setOpen(false)
         },
@@ -61,19 +63,21 @@ export default function DeleteSubcategoryDialog({subcategory}: DeleteSubcategory
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    className="w-full justify-start text-destructive hover:text-destructive"
-                >
-                    <Trash2 className="h-4 w-4 mr-2"/>
-                    Delete
-                </Button>
+                {trigger || (
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full justify-start text-destructive hover:text-destructive"
+                    >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete
+                    </Button>
+                )}
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle className="flex items-center gap-2">
-                        <Trash2 className="h-5 w-5 text-destructive"/>
+                        <Trash2 className="h-5 w-5 text-destructive" />
                         Delete {subcategory.name}?
                     </AlertDialogTitle>
                     <AlertDialogDescription>
@@ -91,7 +95,7 @@ export default function DeleteSubcategoryDialog({subcategory}: DeleteSubcategory
                         disabled={mutation.isPending}
                         className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                     >
-                        {mutation.isPending && <Loader className="h-4 w-4 mr-2 animate-spin"/>}
+                        {mutation.isPending && <Loader className="h-4 w-4 mr-2 animate-spin" />}
                         Delete Subcategory
                     </AlertDialogAction>
                 </AlertDialogFooter>

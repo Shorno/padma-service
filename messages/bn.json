@@ -81,6 +81,8 @@
   "categories": {
     "title": "বিভাগসমূহ",
     "addCategory": "বিভাগ যোগ করুন",
+    "logo": "লোগো",
+    "banner": "ব্যানার",
     "image": "ছবি",
     "name": "নাম",
     "slug": "স্লাগ",

@@ -81,6 +81,8 @@
   "categories": {
     "title": "Categories",
     "addCategory": "Add Category",
+    "logo": "Logo",
+    "banner": "Banner",
     "image": "Image",
     "name": "Name",
     "slug": "Slug",

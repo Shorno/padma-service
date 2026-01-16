@@ -1,10 +1,10 @@
 "use server"
 
-import {category} from "@/db/schema/category"
-import {eq} from "drizzle-orm"
-import {UpdateCategoryFormValues} from "@/lib/schemas/category.scheam";
-import {db} from "@/db/config";
-import {revalidatePath} from "next/cache";
+import { category } from "@/db/schema/category"
+import { eq } from "drizzle-orm"
+import { UpdateCategoryFormValues } from "@/lib/schemas/category.scheam";
+import { db } from "@/db/config";
+import { revalidatePath } from "next/cache";
 
 export default async function updateCategory(data: UpdateCategoryFormValues) {
     try {
@@ -29,6 +29,7 @@ export default async function updateCategory(data: UpdateCategoryFormValues) {
                 name: data.name,
                 slug: data.slug,
                 image: data.image,
+                logo: data.logo || null,
                 isActive: data.isActive,
                 displayOrder: data.displayOrder,
                 updatedAt: new Date(),
