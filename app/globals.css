@@ -16,7 +16,7 @@
     --card-foreground: oklch(0.1908 0.0020 106.5859);
     --popover: oklch(1.0000 0 0);
     --popover-foreground: oklch(0.2671 0.0196 98.9390);
-    --primary: oklch(0.6171 0.1375 39.0427);
+    --primary: oklch(0.633 0.217 359.797);
     --primary-foreground: oklch(1.0000 0 0);
     --secondary: oklch(0.9245 0.0138 92.9892);
     --secondary-foreground: oklch(0.4334 0.0177 98.6048);
@@ -87,6 +87,9 @@
     --navbar-radius-sm: 4px;
     --navbar-radius-md: 6px;
     --navbar-radius-curve: 20px;
+
+
+    --banner-heeader-color: #4D2800;
 }
 
 .dark {
@@ -203,6 +206,11 @@
     --color-navbar-border: var(--navbar-border);
     --color-navbar-text-dark: var(--navbar-text-dark);
     --color-navbar-text-muted: var(--navbar-text-muted);
+
+
+
+    /* Banner Colors for Tailwind */
+    --color-banner-header: var(--banner-heeader-color);
 }
 
 @layer base {

@@ -1,6 +1,6 @@
 "use server"
 
-import { v2 as cloudinary , UploadApiResponse} from 'cloudinary'
+import { v2 as cloudinary, UploadApiResponse } from 'cloudinary'
 
 cloudinary.config({
     cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!,
@@ -34,7 +34,8 @@ export async function uploadImageToCloudinary(
             'image/jpeg',
             'image/jpg',
             'image/png',
-            'image/webp'
+            'image/webp',
+            'image/svg+xml'
         ]
 
         if (!allowedTypes.includes(file.type)) {
@@ -55,15 +56,22 @@ export async function uploadImageToCloudinary(
         const bytes = await file.arrayBuffer()
         const buffer = Buffer.from(bytes)
 
+        // Check if it's an SVG file
+        const isSvg = file.type === 'image/svg+xml'
+
         const result = await new Promise<UploadApiResponse>((resolve, reject) => {
             cloudinary.uploader.upload_stream(
                 {
                     folder,
-                    resource_type: 'auto',
-                    transformation: [
-                        { quality: 'auto:good' },
-                        { fetch_format: 'auto' }
-                    ],
+                    // SVGs must use 'image' resource type, not 'auto' (which treats them as raw)
+                    resource_type: 'image',
+                    // SVGs don't support transformations, skip them for SVG files
+                    ...(isSvg ? { format: 'svg' } : {
+                        transformation: [
+                            { quality: 'auto:good' },
+                            { fetch_format: 'auto' }
+                        ],
+                    }),
                 },
                 (error, result) => {
                     if (error) reject(error)

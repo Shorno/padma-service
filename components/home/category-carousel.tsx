@@ -16,6 +16,7 @@ interface CategoryCarouselProps {
 }
 
 export function CategoryCarousel({ categories }: CategoryCarouselProps) {
+    console.log(categories)
     return (
         <section className="py-2 bg-white">
             <div className="container mx-auto px-4">
@@ -37,7 +38,7 @@ export function CategoryCarousel({ categories }: CategoryCarouselProps) {
                                     className="flex flex-col items-center gap-2 group"
                                 >
                                     {/* Image Container */}
-                                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 overflow-hidden group-hover:opacity-80 transition-opacity">
+                                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 overflow-hidden group-hover:opacity-80 transition-opacity">
                                         <Image
                                             src={category.logo || category.image}
                                             alt={category.name}
