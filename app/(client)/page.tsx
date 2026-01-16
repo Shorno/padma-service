@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import {ModeToggle} from "@/components/mode-toggle";
 
 export const metadata: Metadata = {
     title: "Home",
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
     return (
         <>
+            <ModeToggle/>
 
         </>
     )

@@ -1,3 +1,4 @@
+import Navbar from "@/components/home/navbar/navbar";
 
 export default async function ClientLayout({
                                                children,
@@ -8,6 +9,7 @@ export default async function ClientLayout({
     return (
         <>
             <div>
+                <Navbar/>
                 {children}
             </div>
         </>

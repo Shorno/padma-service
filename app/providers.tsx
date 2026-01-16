@@ -13,7 +13,7 @@ export default function Providers({children}: { children: React.ReactNode }) {
             <Toaster  richColors position={"top-right"}/>
             <ThemeProvider
                 attribute="class"
-                defaultTheme="system"
+                defaultTheme="light"
                 enableSystem
                 disableTransitionOnChange
             >
