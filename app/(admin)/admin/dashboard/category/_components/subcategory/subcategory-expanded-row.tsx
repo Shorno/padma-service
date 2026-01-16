@@ -25,19 +25,14 @@ export default function SubcategoryExpandedRow({ category }: SubcategoryExpanded
     }
 
     return (
-        <div className="space-y-3">
-            <div className="text-sm font-medium text-muted-foreground">
-                Subcategories ({subcategories.length})
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {subcategories.map((subcategory) => (
-                    <SubcategoryCard
-                        key={subcategory.id}
-                        subcategory={subcategory}
-                        categoryName={category.name}
-                    />
-                ))}
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {subcategories.map((subcategory) => (
+                <SubcategoryCard
+                    key={subcategory.id}
+                    subcategory={subcategory}
+                    categoryName={category.name}
+                />
+            ))}
         </div>
     )
 }
