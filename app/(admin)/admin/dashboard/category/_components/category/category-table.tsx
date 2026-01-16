@@ -4,18 +4,20 @@ import * as React from "react"
 import {
     ColumnDef,
     ColumnFiltersState,
+    ExpandedState,
     SortingState,
     VisibilityState,
     flexRender,
     getCoreRowModel,
+    getExpandedRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
 
-import {Button} from "@/components/ui/button"
-import {Input} from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import {
     Table,
     TableBody,
@@ -26,39 +28,46 @@ import {
 } from "@/components/ui/table"
 import NewCategoryDialog from "@/app/(admin)/admin/dashboard/category/_components/category/new-category-dialog";
 import { useTranslations } from "next-intl"
+import { CategoryWithSubcategories } from "./category-columns"
+import SubcategoryExpandedRow from "../subcategory/subcategory-expanded-row"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
 }
 
-export default function CategoryTable<TData, TValue>({
-                                                         columns,
-                                                         data,
-                                                     }: DataTableProps<TData, TValue>) {
+export default function CategoryTable<TData extends CategoryWithSubcategories, TValue>({
+    columns,
+    data,
+}: DataTableProps<TData, TValue>) {
     const t = useTranslations('categories');
     const tCommon = useTranslations('common');
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
+    const [expanded, setExpanded] = React.useState<ExpandedState>({})
 
     const table = useReactTable({
         data,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
+        onExpandedChange: setExpanded,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
+        getExpandedRowModel: getExpandedRowModel(),
         onColumnVisibilityChange: setColumnVisibility,
         onRowSelectionChange: setRowSelection,
+        getRowCanExpand: (row) => row.original.subCategory.length > 0,
         state: {
             sorting,
             columnFilters,
             columnVisibility,
             rowSelection,
+            expanded,
         },
     })
 
@@ -98,19 +107,30 @@ export default function CategoryTable<TData, TValue>({
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
+                                <React.Fragment key={row.id}>
+                                    <TableRow
+                                        data-state={row.getIsSelected() && "selected"}
+                                        className={row.getIsExpanded() ? "border-b-0" : ""}
+                                    >
+                                        {row.getVisibleCells().map((cell) => (
+                                            <TableCell key={cell.id}>
+                                                {flexRender(
+                                                    cell.column.columnDef.cell,
+                                                    cell.getContext()
+                                                )}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                    {row.getIsExpanded() && (
+                                        <TableRow className="bg-muted/30 hover:bg-muted/50">
+                                            <TableCell colSpan={columns.length} className="p-4">
+                                                <SubcategoryExpandedRow
+                                                    category={row.original}
+                                                />
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </React.Fragment>
                             ))
                         ) : (
                             <TableRow>

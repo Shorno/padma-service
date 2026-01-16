@@ -16,8 +16,14 @@ export const createCategorySchema = z.object({
         )
         .trim(),
     image: z
-        .url("Please enter a valid image URL.")
-        .max(255, "Image URL must be at most 255 characters."),
+        .url("Please enter a valid banner image URL.")
+        .max(255, "Banner image URL must be at most 255 characters."),
+    logo: z
+        .string()
+        .refine(
+            (val) => val === "" || z.string().url().safeParse(val).success,
+            "Please enter a valid logo URL or leave empty."
+        ),
     isActive: z.boolean().default(true).nonoptional(),
     displayOrder: z
         .number()
@@ -29,14 +35,14 @@ export const createCategorySchema = z.object({
 })
 
 export const createSubcategorySchema = createCategorySchema.extend({
-    categoryId: z.number({error : "Category ID is required."}).int().nonoptional()
+    categoryId: z.number({ error: "Category ID is required." }).int().nonoptional()
 })
 
 export const updateCategorySchema = createCategorySchema.extend({
-    id: z.number({error : "Category ID is required."}).int().nonoptional()
+    id: z.number({ error: "Category ID is required." }).int().nonoptional()
 })
 export const updateSubcategorySchema = createSubcategorySchema.extend({
-    id: z.number({error : "Subcategory ID is required."}).int().nonoptional()
+    id: z.number({ error: "Subcategory ID is required." }).int().nonoptional()
 })
 
 export type CreateCategoryFormValues = z.infer<typeof createCategorySchema>

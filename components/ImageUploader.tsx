@@ -1,11 +1,11 @@
 "use client"
 
-import React, {useState, useTransition, useCallback} from "react"
-import {AlertCircleIcon, ImageUpIcon, LoaderIcon, XIcon} from "lucide-react"
-import {toast} from "sonner"
-import {getPublicIdFromUrl} from "@/utils/getPublicIdFromUrl"
-import {deleteImageFromCloudinary, uploadImageToCloudinary} from "@/app/actions/cloudinary"
-import {CldImage} from "next-cloudinary";
+import React, { useState, useTransition, useCallback } from "react"
+import { AlertCircleIcon, ImageUpIcon, LoaderIcon, XIcon } from "lucide-react"
+import { toast } from "sonner"
+import { getPublicIdFromUrl } from "@/utils/getPublicIdFromUrl"
+import { deleteImageFromCloudinary, uploadImageToCloudinary } from "@/app/actions/cloudinary"
+import { CldImage } from "next-cloudinary";
 
 interface ImageUploaderProps {
     value?: string
@@ -14,16 +14,18 @@ interface ImageUploaderProps {
     maxSizeMB?: number
     className?: string
     disabled?: boolean
+    compact?: boolean
 }
 
 export default function ImageUploader({
-                                          value = "",
-                                          onChange,
-                                          folder = "categories",
-                                          maxSizeMB = 5,
-                                          className = "",
-                                          disabled = false,
-                                      }: ImageUploaderProps) {
+    value = "",
+    onChange,
+    folder = "categories",
+    maxSizeMB = 5,
+    className = "",
+    disabled = false,
+    compact = false,
+}: ImageUploaderProps) {
     const [isDragging, setIsDragging] = useState(false)
     const [previewUrl, setPreviewUrl] = useState<string>(value)
     const [error, setError] = useState<string | null>(null)
@@ -177,9 +179,9 @@ export default function ImageUploader({
                     data-dragging={isDragging || undefined}
                     data-disabled={disabled || undefined}
                     className={`
-                        relative flex min-h-52 flex-col items-center justify-center 
+                        relative flex ${compact ? 'h-28' : 'min-h-52'} flex-col items-center justify-center 
                         overflow-hidden rounded-xl border-2 border-dashed border-input 
-                        p-4 transition-all duration-200
+                        ${compact ? 'p-2' : 'p-4'} transition-all duration-200
                         ${!disabled && !isLoading ? 'cursor-pointer hover:border-primary hover:bg-accent/50' : ''}
                         ${isDragging ? 'border-primary bg-accent/50 scale-[0.98]' : ''}
                         ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
@@ -191,7 +193,7 @@ export default function ImageUploader({
                 >
                     {isLoading ? (
                         <div className="flex flex-col items-center justify-center gap-3">
-                            <LoaderIcon className="size-10 animate-spin text-primary"/>
+                            <LoaderIcon className="size-10 animate-spin text-primary" />
                             <p className="text-sm font-medium text-muted-foreground">
                                 {isPending ? "Uploading..." : "Deleting..."}
                             </p>
@@ -209,21 +211,27 @@ export default function ImageUploader({
                             />
                         </div>
                     ) : (
-                        <div className="flex flex-col items-center justify-center text-center space-y-3">
+                        <div className={`flex flex-col items-center justify-center text-center ${compact ? 'space-y-1' : 'space-y-3'}`}>
                             <div
-                                className="flex size-12 items-center justify-center rounded-full border-2 bg-background shadow-sm"
+                                className={`flex ${compact ? 'size-8' : 'size-12'} items-center justify-center rounded-full border-2 bg-background shadow-sm`}
                                 aria-hidden="true"
                             >
-                                <ImageUpIcon className="size-5 text-muted-foreground"/>
+                                <ImageUpIcon className={`${compact ? 'size-3' : 'size-5'} text-muted-foreground`} />
                             </div>
-                            <div>
-                                <p className="text-sm font-medium">
-                                    Drop or click to upload image
+                            {compact ? (
+                                <p className="text-xs text-muted-foreground">
+                                    Click to upload
                                 </p>
-                                <p className="text-xs text-muted-foreground mt-1">
-                                    SVG, PNG, JPG, or WebP (max {maxSizeMB}MB)
-                                </p>
-                            </div>
+                            ) : (
+                                <div>
+                                    <p className="text-sm font-medium">
+                                        Drop or click to upload image
+                                    </p>
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        SVG, PNG, JPG, or WebP (max {maxSizeMB}MB)
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
@@ -250,7 +258,7 @@ export default function ImageUploader({
                     className="flex items-center gap-2 rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive"
                     role="alert"
                 >
-                    <AlertCircleIcon className="size-4 shrink-0" aria-hidden="true"/>
+                    <AlertCircleIcon className="size-4 shrink-0" aria-hidden="true" />
                     <span>{error}</span>
                 </div>
             )}
