@@ -14,8 +14,8 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 
-import {Button} from "@/components/ui/button"
-import {Input} from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import {
     Table,
     TableBody,
@@ -24,19 +24,19 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import NewProductDialog from "@/app/(admin)/admin/dashboard/products/_components/new-product-dialog"
-import {useTranslations} from "next-intl"
+import NewServiceDialog from "@/app/(admin)/admin/dashboard/services/_components/new-service-dialog"
+import { useTranslations } from "next-intl"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
 }
 
-export default function ProductTable<TData, TValue>({
-                                                         columns,
-                                                         data,
-                                                     }: DataTableProps<TData, TValue>) {
-    const t = useTranslations('products');
+export default function ServiceTable<TData, TValue>({
+    columns,
+    data,
+}: DataTableProps<TData, TValue>) {
+    const t = useTranslations('services');
     const tCommon = useTranslations('common');
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -73,7 +73,7 @@ export default function ProductTable<TData, TValue>({
                     }
                     className="max-w-sm"
                 />
-                <NewProductDialog/>
+                <NewServiceDialog />
             </div>
             <div className="rounded-md border">
                 <Table>

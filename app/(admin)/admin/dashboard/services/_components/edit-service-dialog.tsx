@@ -1,10 +1,11 @@
 "use client"
 
 import * as React from "react"
-import {useForm} from "@tanstack/react-form"
-import {toast} from "sonner"
+import { useForm } from "@tanstack/react-form"
+import { toast } from "sonner"
+import { Pencil } from "lucide-react"
 
-import {Button} from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,
@@ -20,15 +21,16 @@ import {
     FieldError,
     FieldLabel,
 } from "@/components/ui/field"
-import {Input} from "@/components/ui/input"
-import {createProductSchema} from "@/lib/schemas/product.schema"
-import {Switch} from "@/components/ui/switch"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { updateServiceSchema } from "@/lib/schemas/service.schema"
+import { Switch } from "@/components/ui/switch"
 import ImageUploader from "@/components/ImageUploader"
 import AdditionalImagesUploader from "@/components/AdditionalImagesUploader"
-import {generateSlug} from "@/utils/generate-slug"
-import {useState} from "react"
-import createProduct from "@/app/(admin)/admin/dashboard/products/actions/create-product"
-import {Loader} from "lucide-react"
+import { generateSlug } from "@/utils/generate-slug"
+import { useState } from "react"
+import updateService from "@/app/(admin)/admin/dashboard/services/actions/update-service"
+import { Loader } from "lucide-react"
 import {
     Select,
     SelectContent,
@@ -36,65 +38,70 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import {useCategories, useSubCategories} from "@/hooks/use-categories"
+import { useCategories, useSubCategories } from "@/hooks/use-categories"
+import { ServiceWithRelations } from "./service-columns"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-export default function NewProductDialog() {
+interface EditServiceDialogProps {
+    service: ServiceWithRelations
+}
+
+export default function EditServiceDialog({ service }: EditServiceDialogProps) {
     const [open, setOpen] = React.useState(false)
-    const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
+    const [selectedCategory, setSelectedCategory] = useState<number>(service.categoryId)
     const queryClient = useQueryClient()
 
-    const {data: categories = []} = useCategories()
+    const { data: categories = [] } = useCategories()
     const subCategories = useSubCategories(selectedCategory)
 
     const mutation = useMutation({
-        mutationFn: createProduct,
+        mutationFn: updateService,
         onSuccess: (result) => {
             if (!result.success) {
                 switch (result.status) {
                     case 400:
-                        toast.error("Invalid product data.", {
+                        toast.error("Invalid service data.", {
                             description: "Please check your form inputs.",
                         })
                         break
                     case 401:
                         toast.error("You are not authorized to perform this action.")
                         break
+                    case 404:
+                        toast.error("Service not found.")
+                        break
                     default:
                         toast.error(result.error || "Something went wrong.")
                 }
                 return
             }
-            queryClient.invalidateQueries({ queryKey: ['admin-products'] })
+            queryClient.invalidateQueries({ queryKey: ['admin-services'] })
             toast.success(result.message)
-            form.reset()
-            setSelectedCategory(null)
             setOpen(false)
         },
         onError: () => {
-            toast.error("An unexpected error occurred while creating the product.")
+            toast.error("An unexpected error occurred while updating the service.")
         },
     })
 
     const form = useForm({
         defaultValues: {
-            name: "",
-            slug: "",
-            categoryId: 0,
-            subCategoryId: undefined as number | undefined,
-            size: "",
-            price: "",
-            stockQuantity: 0,
-            image: "",
-            additionalImages: [] as string[],
-            inStock: true,
-            isFeatured: false,
+            id: service.id,
+            name: service.name,
+            slug: service.slug,
+            description: service.description ?? "",
+            categoryId: service.categoryId,
+            subCategoryId: service.subCategoryId ?? undefined as number | undefined,
+            image: service.image,
+            additionalImages: service.images?.map(img => img.imageUrl) || [] as string[],
+            isPublished: service.isPublished,
+            isFeatured: service.isFeatured,
         },
         validators: {
             //@ts-ignore
-            onSubmit: createProductSchema,
+            onSubmit: updateServiceSchema,
         },
-        onSubmit: async ({value}) => {
+        onSubmit: async ({ value }) => {
             mutation.mutate(value)
         },
     })
@@ -107,17 +114,20 @@ export default function NewProductDialog() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>New Product</Button>
+                <Button variant="ghost" size="sm" className="w-full justify-start">
+                    <Pencil className="h-4 w-4 mr-2" />
+                    Edit
+                </Button>
             </DialogTrigger>
             <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>Create New Product</DialogTitle>
+                    <DialogTitle>Edit Service</DialogTitle>
                     <DialogDescription>
-                        Add a new product to your store inventory.
+                        Update the details of {service.name}.
                     </DialogDescription>
                 </DialogHeader>
                 <form
-                    id="new-product-form"
+                    id="edit-service-form"
                     onSubmit={(e) => {
                         e.preventDefault()
                         e.stopPropagation()
@@ -132,25 +142,52 @@ export default function NewProductDialog() {
                                 field.state.meta.isTouched && !field.state.meta.isValid
                             return (
                                 <Field data-invalid={isInvalid}>
-                                    <FieldLabel htmlFor={field.name}>Product Image *</FieldLabel>
+                                    <FieldLabel htmlFor={field.name}>Service Image *</FieldLabel>
                                     <ImageUploader
                                         value={field.state.value}
                                         onChange={field.handleChange}
-                                        folder="products"
+                                        folder="services"
                                         maxSizeMB={5}
                                     />
                                     <FieldDescription>
-                                        Upload a product image (max 5MB)
+                                        Upload a cover image for your service (max 5MB)
                                     </FieldDescription>
                                     {isInvalid && (
-                                        <FieldError errors={field.state.meta.errors}/>
+                                        <FieldError errors={field.state.meta.errors} />
                                     )}
                                 </Field>
                             )
                         }}
                     </form.Field>
 
-                    {/* Product Name */}
+                    {/* Additional Images Uploader */}
+                    <form.Field name="additionalImages">
+                        {(field) => {
+                            const isInvalid =
+                                field.state.meta.isTouched && !field.state.meta.isValid
+                            return (
+                                <Field data-invalid={isInvalid}>
+                                    <FieldLabel htmlFor={field.name}>
+                                        Gallery Images (Optional)
+                                    </FieldLabel>
+                                    <AdditionalImagesUploader
+                                        value={field.state.value}
+                                        onChange={field.handleChange}
+                                        folder="services/gallery"
+                                        maxSizeMB={5}
+                                    />
+                                    <FieldDescription>
+                                        Upload additional images for the service gallery (max 5MB each)
+                                    </FieldDescription>
+                                    {isInvalid && (
+                                        <FieldError errors={field.state.meta.errors} />
+                                    )}
+                                </Field>
+                            )
+                        }}
+                    </form.Field>
+
+                    {/* Service Name */}
                     <form.Field name="name">
                         {(field) => {
                             const isInvalid =
@@ -158,7 +195,7 @@ export default function NewProductDialog() {
                             return (
                                 <Field data-invalid={isInvalid}>
                                     <FieldLabel htmlFor={field.name}>
-                                        Product Name *
+                                        Service Title *
                                     </FieldLabel>
                                     <Input
                                         id={field.name}
@@ -170,11 +207,11 @@ export default function NewProductDialog() {
                                             autoGenerateSlugFromName(e.target.value)
                                         }}
                                         aria-invalid={isInvalid}
-                                        placeholder="Organic Tomatoes"
+                                        placeholder="Web Development Services"
                                         autoComplete="off"
                                     />
                                     {isInvalid && (
-                                        <FieldError errors={field.state.meta.errors}/>
+                                        <FieldError errors={field.state.meta.errors} />
                                     )}
                                 </Field>
                             )
@@ -196,20 +233,49 @@ export default function NewProductDialog() {
                                         onBlur={field.handleBlur}
                                         onChange={(e) => field.handleChange(e.target.value)}
                                         aria-invalid={isInvalid}
-                                        placeholder="organic-tomatoes"
+                                        placeholder="web-development-services"
                                         autoComplete="off"
                                     />
                                     <FieldDescription>
-                                        URL-friendly version of the name.
+                                        URL-friendly version of the title.
                                     </FieldDescription>
                                     {isInvalid && (
-                                        <FieldError errors={field.state.meta.errors}/>
+                                        <FieldError errors={field.state.meta.errors} />
                                     )}
                                 </Field>
                             )
                         }}
                     </form.Field>
 
+                    {/* Description */}
+                    <form.Field name="description">
+                        {(field) => {
+                            const isInvalid =
+                                field.state.meta.isTouched && !field.state.meta.isValid
+                            return (
+                                <Field data-invalid={isInvalid}>
+                                    <FieldLabel htmlFor={field.name}>Description</FieldLabel>
+                                    <Textarea
+                                        id={field.name}
+                                        name={field.name}
+                                        value={field.state.value}
+                                        onBlur={field.handleBlur}
+                                        onChange={(e) => field.handleChange(e.target.value)}
+                                        aria-invalid={isInvalid}
+                                        placeholder="Describe your service in detail..."
+                                        rows={6}
+                                        autoComplete="off"
+                                    />
+                                    <FieldDescription>
+                                        Detailed description of the service (optional, max 5000 characters)
+                                    </FieldDescription>
+                                    {isInvalid && (
+                                        <FieldError errors={field.state.meta.errors} />
+                                    )}
+                                </Field>
+                            )
+                        }}
+                    </form.Field>
 
                     {/* Category and Subcategory Row */}
                     <div className="grid grid-cols-2 gap-4">
@@ -231,7 +297,7 @@ export default function NewProductDialog() {
                                             }}
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Select category"/>
+                                                <SelectValue placeholder="Select category" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {categories.map((cat) => (
@@ -242,7 +308,7 @@ export default function NewProductDialog() {
                                             </SelectContent>
                                         </Select>
                                         {isInvalid && (
-                                            <FieldError errors={field.state.meta.errors}/>
+                                            <FieldError errors={field.state.meta.errors} />
                                         )}
                                     </Field>
                                 )
@@ -267,7 +333,7 @@ export default function NewProductDialog() {
                                             disabled={!selectedCategory || subCategories.length === 0}
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Select subcategory"/>
+                                                <SelectValue placeholder="Select subcategory" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="none">None</SelectItem>
@@ -279,7 +345,7 @@ export default function NewProductDialog() {
                                             </SelectContent>
                                         </Select>
                                         {isInvalid && (
-                                            <FieldError errors={field.state.meta.errors}/>
+                                            <FieldError errors={field.state.meta.errors} />
                                         )}
                                     </Field>
                                 )
@@ -287,125 +353,15 @@ export default function NewProductDialog() {
                         </form.Field>
                     </div>
 
-                    {/* Size and Price Row */}
-                    <div className="grid grid-cols-2 gap-4">
-                        {/* Size */}
-                        <form.Field name="size">
-                            {(field) => {
-                                const isInvalid =
-                                    field.state.meta.isTouched && !field.state.meta.isValid
-                                return (
-                                    <Field data-invalid={isInvalid}>
-                                        <FieldLabel htmlFor={field.name}>Size *</FieldLabel>
-                                        <Input
-                                            id={field.name}
-                                            name={field.name}
-                                            value={field.state.value}
-                                            onBlur={field.handleBlur}
-                                            onChange={(e) => field.handleChange(e.target.value)}
-                                            aria-invalid={isInvalid}
-                                            placeholder="500g, 1kg, 250ml"
-                                            autoComplete="off"
-                                        />
-                                        {isInvalid && (
-                                            <FieldError errors={field.state.meta.errors}/>
-                                        )}
-                                    </Field>
-                                )
-                            }}
-                        </form.Field>
-
-                        {/* Price */}
-                        <form.Field name="price">
-                            {(field) => {
-                                const isInvalid =
-                                    field.state.meta.isTouched && !field.state.meta.isValid
-                                return (
-                                    <Field data-invalid={isInvalid}>
-                                        <FieldLabel htmlFor={field.name}>Price *</FieldLabel>
-                                        <Input
-                                            id={field.name}
-                                            name={field.name}
-                                            type="text"
-                                            value={field.state.value}
-                                            onBlur={field.handleBlur}
-                                            onChange={(e) => field.handleChange(e.target.value)}
-                                            aria-invalid={isInvalid}
-                                            placeholder="9.99"
-                                            autoComplete="off"
-                                        />
-                                        {isInvalid && (
-                                            <FieldError errors={field.state.meta.errors}/>
-                                        )}
-                                    </Field>
-                                )
-                            }}
-                        </form.Field>
-                    </div>
-
-                    {/* Stock Quantity */}
-                    <form.Field name="stockQuantity">
-                        {(field) => {
-                            const isInvalid =
-                                field.state.meta.isTouched && !field.state.meta.isValid
-                            return (
-                                <Field data-invalid={isInvalid}>
-                                    <FieldLabel htmlFor={field.name}>Stock Quantity</FieldLabel>
-                                    <Input
-                                        id={field.name}
-                                        name={field.name}
-                                        type="number"
-                                        value={field.state.value}
-                                        onBlur={field.handleBlur}
-                                        onChange={(e) => field.handleChange(parseInt(e.target.value) || 0)}
-                                        aria-invalid={isInvalid}
-                                        placeholder="100"
-                                        autoComplete="off"
-                                    />
-                                    {isInvalid && (
-                                        <FieldError errors={field.state.meta.errors}/>
-                                    )}
-                                </Field>
-                            )
-                        }}
-                    </form.Field>
-
-                    {/* Additional Images Uploader */}
-                    <form.Field name="additionalImages">
-                        {(field) => {
-                            const isInvalid =
-                                field.state.meta.isTouched && !field.state.meta.isValid
-                            return (
-                                <Field data-invalid={isInvalid}>
-                                    <FieldLabel htmlFor={field.name}>
-                                        Additional Images (Optional)
-                                    </FieldLabel>
-                                    <AdditionalImagesUploader
-                                        value={field.state.value}
-                                        onChange={field.handleChange}
-                                        folder="products/additional"
-                                        maxSizeMB={5}
-                                    />
-                                    <FieldDescription>
-                                        Upload additional images for the product (max 5MB each)
-                                    </FieldDescription>
-                                    {isInvalid && (
-                                        <FieldError errors={field.state.meta.errors}/>
-                                    )}
-                                </Field>
-                            )
-                        }}
-                    </form.Field>
-
-                    {/* In Stock Switch */}
-                    <form.Field name="inStock">
+                    {/* Published Switch */}
+                    <form.Field name="isPublished">
                         {(field) => (
                             <Field>
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <FieldLabel htmlFor={field.name}>In Stock</FieldLabel>
+                                        <FieldLabel htmlFor={field.name}>Publish</FieldLabel>
                                         <FieldDescription>
-                                            Mark product as available for purchase
+                                            Make this service visible to the public
                                         </FieldDescription>
                                     </div>
                                     <Switch
@@ -424,9 +380,9 @@ export default function NewProductDialog() {
                             <Field>
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <FieldLabel htmlFor={field.name}>Featured Product</FieldLabel>
+                                        <FieldLabel htmlFor={field.name}>Featured Service</FieldLabel>
                                         <FieldDescription>
-                                            Display this product in featured sections
+                                            Display this service in featured sections
                                         </FieldDescription>
                                     </div>
                                     <Switch
@@ -450,11 +406,11 @@ export default function NewProductDialog() {
                     </Button>
                     <Button
                         type="submit"
-                        form="new-product-form"
+                        form="edit-service-form"
                         disabled={mutation.isPending}
                     >
-                        {mutation.isPending && <Loader className="mr-2 h-4 w-4 animate-spin"/>}
-                        Create Product
+                        {mutation.isPending && <Loader className="mr-2 h-4 w-4 animate-spin" />}
+                        Update Service
                     </Button>
                 </DialogFooter>
             </DialogContent>

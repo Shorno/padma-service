@@ -1,8 +1,8 @@
 "use server"
 
-import {db} from "@/db/config";
-import {eq} from "drizzle-orm";
-import {category} from "@/db/schema/category";
+import { db } from "@/db/config";
+import { eq } from "drizzle-orm";
+import { category } from "@/db/schema/category";
 
 export async function getCategoriesForSelect() {
     return await db.query.category.findMany({
@@ -15,4 +15,3 @@ export async function getCategoriesForSelect() {
         orderBy: (category, { asc }) => [asc(category.displayOrder)]
     })
 }
-

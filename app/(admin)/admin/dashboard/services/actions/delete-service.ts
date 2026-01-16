@@ -1,26 +1,26 @@
 "use server"
 
-import {db} from "@/db/config";
-import {product} from "@/db/schema/product";
-import {eq} from "drizzle-orm";
-import {revalidatePath} from "next/cache";
-import {checkAuth} from "@/app/actions/auth/checkAuth";
+import { db } from "@/db/config";
+import { service } from "@/db/schema/service";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+import { checkAuth } from "@/app/actions/auth/checkAuth";
 
 export type ActionResult<TData = unknown> =
     | {
-    success: true
-    status: number
-    data: TData
-    message?: string
-}
+        success: true
+        status: number
+        data: TData
+        message?: string
+    }
     | {
-    success: false
-    status: number
-    error: string
-    details?: unknown
-}
+        success: false
+        status: number
+        error: string
+        details?: unknown
+    }
 
-export default async function deleteProduct(
+export default async function deleteService(
     id: number
 ): Promise<ActionResult<{ id: number }>> {
     const session = await checkAuth()
@@ -34,31 +34,31 @@ export default async function deleteProduct(
     }
 
     try {
-        const deletedProduct = await db
-            .delete(product)
-            .where(eq(product.id, id))
+        const deletedService = await db
+            .delete(service)
+            .where(eq(service.id, id))
             .returning()
 
-        if (!deletedProduct.length) {
+        if (!deletedService.length) {
             return {
                 success: false,
                 status: 404,
-                error: "Product not found",
+                error: "Service not found",
             }
         }
 
         // Revalidate only client-facing routes (not admin dashboard)
-        revalidatePath("/products")
+        revalidatePath("/services")
         revalidatePath("/")
 
         return {
             success: true,
             status: 200,
             data: { id },
-            message: "Product deleted successfully",
+            message: "Service deleted successfully",
         }
     } catch (error) {
-        console.error("Error deleting product:", error)
+        console.error("Error deleting service:", error)
 
         return {
             success: false,
