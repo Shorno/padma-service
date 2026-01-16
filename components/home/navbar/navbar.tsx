@@ -5,11 +5,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 
 export default function Navbar() {
     const [searchQuery, setSearchQuery] = useState("");
+
+    const menuItems = [
+        { label: "সকল সার্ভিস", href: "/services" },
+        { label: "আমাদের সার্ভিস বিষয় জানুন", href: "/about-services" },
+        { label: "আমাদের পরিচিতি", href: "/about" },
+        { label: "আমাদের সাথে যোগাযোগ", href: "/contact" },
+        { label: "আমাদের ঠিকানা", href: "/address" },
+    ];
 
     return (
         <nav className="flex flex-col">
@@ -129,9 +142,9 @@ export default function Navbar() {
                                 </div>
                             </Link>
 
-                            {/* Mobile Menu */}
-                            <Sheet>
-                                <SheetTrigger asChild>
+                            {/* Mobile Menu - Dropdown */}
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
                                     <Button
                                         variant="ghost"
                                         size="icon"
@@ -139,60 +152,24 @@ export default function Navbar() {
                                     >
                                         <Menu className="h-7! w-7! sm:h-6! sm:w-6! mt-2 sm:mt-0" />
                                     </Button>
-                                </SheetTrigger>
-                                <SheetContent side="right" className="w-80">
-                                    <SheetHeader>
-                                        <SheetTitle className="flex items-center gap-2">
-                                            <Image
-                                                src="/logos/site-logo.png"
-                                                alt="পদ্মা সার্ভিস"
-                                                width={32}
-                                                height={32}
-                                                className="rounded-full"
-                                            />
-                                            <span>পদ্মা সার্ভিস</span>
-                                        </SheetTitle>
-                                    </SheetHeader>
-                                    <div className="mt-6 space-y-4">
-                                        {/* Mobile Search */}
-                                        <div className="relative">
-                                            <Input
-                                                type="text"
-                                                placeholder="সার্চ করুন..."
-                                                value={searchQuery}
-                                                onChange={(e) => setSearchQuery(e.target.value)}
-                                                className="pr-10"
-                                            />
-                                            <Button
-                                                size="icon"
-                                                variant="ghost"
-                                                className="absolute right-0 top-0 h-full w-10"
-                                            >
-                                                <Search className="h-4 w-4" />
-                                            </Button>
-                                        </div>
-
-                                        {/* Mobile All Services Button */}
-                                        <Button
-                                            className="w-full bg-navbar-deep hover:bg-navbar-deep/90 text-navbar-light font-semibold"
-                                            style={{ fontSize: 'var(--navbar-font-link)' }}
-                                        >
-                                            সকল সার্ভিস
-                                        </Button>
-
-                                        {/* Navigation Links */}
-                                        <nav className="space-y-2">
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                    align="end"
+                                    sideOffset={55}
+                                    className="w-[calc(100vw-32px)] sm:w-[486px] p-0 border-0 shadow-lg overflow-hidden rounded-md mx-4"
+                                >
+                                    {menuItems.map((item, index) => (
+                                        <DropdownMenuItem key={index} asChild className="p-0 focus:bg-nav-link-primary/90">
                                             <Link
-                                                href="/"
-                                                className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-accent transition-colors"
+                                                href={item.href}
+                                                className="w-full h-10 flex items-center pl-[27px] text-base font-semibold bg-nav-link-primary text-white hover:bg-nav-link-primary/90 cursor-pointer"
                                             >
-                                                <Home className="h-5 w-5" />
-                                                <span>হোম</span>
+                                                {item.label}
                                             </Link>
-                                        </nav>
-                                    </div>
-                                </SheetContent>
-                            </Sheet>
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
                     </div>
                 </div>

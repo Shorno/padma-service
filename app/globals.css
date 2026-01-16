@@ -70,6 +70,7 @@
     --navbar-border: #ECECEC;
     --navbar-text-dark: #000000;
     --navbar-text-muted: #999085;
+    --nav-link-primary: #e46499;
 
     /* Navbar Typography */
     --navbar-font-brand: 18px;
@@ -206,6 +207,7 @@
     --color-navbar-border: var(--navbar-border);
     --color-navbar-text-dark: var(--navbar-text-dark);
     --color-navbar-text-muted: var(--navbar-text-muted);
+    --color-nav-link-primary: var(--nav-link-primary);
 
 
 

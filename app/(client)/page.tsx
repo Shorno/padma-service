@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { CategoryCarousel } from "@/components/home/category-carousel";
 import { BannerSection } from "@/components/home/banner-section";
 import getCategories from "@/app/(admin)/admin/dashboard/category/actions/category/get-categories";
-import { getBanner } from "@/app/(admin)/admin/dashboard/banner/actions/get-banner";
+import { getBannerWithImages } from "@/app/(admin)/admin/dashboard/banner/actions/get-banner";
 
 export const metadata: Metadata = {
     title: "Home",
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default async function HomePage() {
     const [categories, banner] = await Promise.all([
         getCategories(),
-        getBanner(),
+        getBannerWithImages(),
     ]);
     const activeCategories = categories.filter(cat => cat.isActive);
 
