@@ -4,9 +4,8 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "@tanstack/react-form"
 import { toast } from "sonner"
-import { ArrowLeft, Loader, Eye, EyeOff, Plus, Trash2, GripVertical } from "lucide-react"
+import { ArrowLeft, Loader, Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
 import { Field, FieldError } from "@/components/ui/field"
@@ -15,11 +14,11 @@ import { TiptapEditor } from "@/components/tiptap-editor"
 import { Switch } from "@/components/ui/switch"
 import ImageUploader from "@/components/ImageUploader"
 import { generateSlug } from "@/utils/generate-slug"
-import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Separator } from "@/components/ui/separator"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import updateSubcategory from "@/app/(admin)/admin/dashboard/category/actions/subcategory/update-subcategory"
+import CarouselManager from "./carousel-manager"
 
 interface SubcategoryEditFormProps {
     subcategory: {
@@ -85,26 +84,28 @@ export default function SubcategoryEditForm({ subcategory, categoryName }: Subca
         <div className="min-h-screen bg-background">
             {/* Sticky Header */}
             <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                <div className="flex h-14 items-center justify-between px-3 sm:px-4 lg:px-6">
-                    <div className="flex items-center gap-2 sm:gap-4">
-                        <Button asChild variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9">
-                            <Link href="/admin/dashboard/category">
+                <div className="flex h-14 items-center justify-between px-2 sm:px-4 lg:px-6 gap-2">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                        <Button asChild variant="ghost" size="icon" className="h-8 w-8 shrink-0">
+                            <Link href={`/admin/dashboard/category/${subcategory.categoryId}`}>
                                 <ArrowLeft className="h-4 w-4" />
                             </Link>
                         </Button>
-                        <div>
-                            <h1 className="text-sm sm:text-lg font-semibold truncate max-w-[150px] sm:max-w-none">
-                                Edit: {subcategory.name}
+                        <div className="min-w-0">
+                            <h1 className="text-sm sm:text-base font-semibold truncate">
+                                {subcategory.name}
                             </h1>
-                            <p className="text-xs text-muted-foreground">{categoryName}</p>
+                            <p className="text-[10px] sm:text-xs text-muted-foreground truncate">
+                                {categoryName}
+                            </p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 shrink-0">
                         <Button
                             type="button"
                             variant="outline"
                             size="sm"
-                            onClick={() => router.push("/admin/dashboard/category")}
+                            onClick={() => router.push(`/admin/dashboard/category/${subcategory.categoryId}`)}
                             disabled={mutation.isPending}
                             className="hidden sm:inline-flex"
                         >
@@ -117,7 +118,8 @@ export default function SubcategoryEditForm({ subcategory, categoryName }: Subca
                             disabled={mutation.isPending}
                         >
                             {mutation.isPending && <Loader className="mr-2 h-4 w-4 animate-spin" />}
-                            Save Changes
+                            <span className="hidden sm:inline">Save Changes</span>
+                            <span className="sm:hidden">Save</span>
                         </Button>
                     </div>
                 </div>
@@ -283,29 +285,10 @@ export default function SubcategoryEditForm({ subcategory, categoryName }: Subca
 
                         <Separator />
 
-                        {/* Carousels Section - Placeholder for now */}
+                        {/* Carousels Section */}
                         <div className="space-y-4">
                             <h3 className="text-sm font-medium text-muted-foreground">Carousels</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                {['Left', 'Middle', 'Right'].map((position) => (
-                                    <Card key={position}>
-                                        <CardHeader className="pb-3">
-                                            <CardTitle className="text-sm">{position} Carousel</CardTitle>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-4 text-center">
-                                                <Plus className="h-6 w-6 mx-auto text-muted-foreground/50" />
-                                                <p className="text-xs text-muted-foreground mt-2">
-                                                    Add images
-                                                </p>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                ))}
-                            </div>
-                            <p className="text-xs text-muted-foreground">
-                                Carousel management will be available after saving basic info.
-                            </p>
+                            <CarouselManager subCategoryId={subcategory.id} />
                         </div>
                     </main>
 

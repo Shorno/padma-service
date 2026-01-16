@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, ChevronRight, MoreHorizontal, Plus } from "lucide-react"
+import { ArrowUpDown, ChevronDown, ChevronRight, MoreHorizontal, Plus, ExternalLink } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -134,20 +134,22 @@ export function useCategoryColumns() {
                 const category = row.original
                 const count = category.subCategory.length
                 return (
-                    <div className="flex justify-center gap-2 items-center">
-                        <Badge variant="outline" className="font-normal">
-                            {count} {count === 1 ? 'subcategory' : 'subcategories'}
-                        </Badge>
-                        <Button asChild size="sm" variant="outline">
+                    <div className="flex justify-center items-center gap-1">
+                        <Button asChild size="sm" variant="ghost" className="h-7 px-2 text-muted-foreground hover:text-foreground">
+                            <Link href={`/admin/dashboard/category/${category.id}`}>
+                                {count} {count === 1 ? 'item' : 'items'}
+                                <ExternalLink className="h-3 w-3 ml-1" />
+                            </Link>
+                        </Button>
+                        <Button asChild size="icon" variant="ghost" className="h-7 w-7">
                             <Link href={`/admin/dashboard/category/${category.id}/subcategory/new`}>
-                                <Plus className="h-3 w-3 mr-1" />
-                                Add
+                                <Plus className="h-3.5 w-3.5" />
                             </Link>
                         </Button>
                     </div>
                 )
             },
-            size: 180,
+            size: 160,
         },
         {
             id: "actions",

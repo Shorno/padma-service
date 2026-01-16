@@ -91,14 +91,13 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                 <CollapsibleContent>
                     <div className="px-3 pb-3 pt-0">
                         <div className="pt-3 border-t">
-                            <div className="flex items-center justify-between mb-3">
-                                <span className="text-sm text-muted-foreground">
-                                    {category.subCategory.length} subcategories
+                            <div className="flex items-center justify-between mb-2">
+                                <span className="text-xs text-muted-foreground">
+                                    {category.subCategory.length} items
                                 </span>
-                                <Button asChild size="sm" variant="outline">
+                                <Button asChild size="icon" variant="ghost" className="h-6 w-6">
                                     <Link href={`/admin/dashboard/category/${category.id}/subcategory/new`}>
-                                        <Plus className="h-3 w-3 mr-1" />
-                                        Add
+                                        <Plus className="h-3.5 w-3.5" />
                                     </Link>
                                 </Button>
                             </div>
