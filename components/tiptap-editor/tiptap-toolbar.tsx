@@ -20,6 +20,12 @@ import {
     Unlink,
     Pilcrow,
     ChevronDown,
+    Table as TableIcon,
+    TableCellsMerge,
+    Trash2,
+    Plus,
+    Rows3,
+    Columns3,
 } from 'lucide-react'
 import {
     DropdownMenu,
@@ -93,7 +99,7 @@ export function TiptapToolbar({ disabled = false }: TiptapToolbarProps) {
                             <ChevronDown className="tiptap-button-icon" style={{ marginLeft: '2px', opacity: 0.5 }} />
                         </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-48">
+                    <DropdownMenuContent align="start" className="w-56">
                         <DropdownMenuItem
                             onSelect={(e) => {
                                 e.preventDefault()
@@ -221,13 +227,129 @@ export function TiptapToolbar({ disabled = false }: TiptapToolbarProps) {
 
             <ToolbarSeparator />
 
-            {/* Link & Image */}
+            {/* Link & Image & Table */}
             <ToolbarGroup>
                 <LinkPopover disabled={disabled} />
                 <ImageUploadButton
                     hideWhenUnavailable={false}
                     onInserted={() => console.log('Image inserted!')}
                 />
+
+                {/* Table Dropdown */}
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <button
+                            type="button"
+                            className="tiptap-button"
+                            data-style="ghost"
+                            data-active-state={editor.isActive('table') ? 'on' : 'off'}
+                            disabled={disabled}
+                            title="Table"
+                        >
+                            <TableIcon className="tiptap-button-icon" />
+                        </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-48">
+                        <DropdownMenuItem
+                            onSelect={(e) => {
+                                e.preventDefault()
+                                editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
+                            }}
+                            className="cursor-pointer"
+                        >
+                            <Plus className="h-4 w-4 mr-2" />
+                            Insert Table
+                        </DropdownMenuItem>
+                        {editor.isActive('table') && (
+                            <>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                    onSelect={(e) => {
+                                        e.preventDefault()
+                                        editor.chain().focus().addColumnBefore().run()
+                                    }}
+                                    className="cursor-pointer"
+                                >
+                                    <Columns3 className="h-4 w-4 mr-2" />
+                                    Add Column Before
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onSelect={(e) => {
+                                        e.preventDefault()
+                                        editor.chain().focus().addColumnAfter().run()
+                                    }}
+                                    className="cursor-pointer"
+                                >
+                                    <Columns3 className="h-4 w-4 mr-2" />
+                                    Add Column After
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onSelect={(e) => {
+                                        e.preventDefault()
+                                        editor.chain().focus().deleteColumn().run()
+                                    }}
+                                    className="cursor-pointer"
+                                >
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Delete Column
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                    onSelect={(e) => {
+                                        e.preventDefault()
+                                        editor.chain().focus().addRowBefore().run()
+                                    }}
+                                    className="cursor-pointer"
+                                >
+                                    <Rows3 className="h-4 w-4 mr-2" />
+                                    Add Row Before
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onSelect={(e) => {
+                                        e.preventDefault()
+                                        editor.chain().focus().addRowAfter().run()
+                                    }}
+                                    className="cursor-pointer"
+                                >
+                                    <Rows3 className="h-4 w-4 mr-2" />
+                                    Add Row After
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onSelect={(e) => {
+                                        e.preventDefault()
+                                        editor.chain().focus().deleteRow().run()
+                                    }}
+                                    className="cursor-pointer"
+                                >
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Delete Row
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                    onSelect={(e) => {
+                                        e.preventDefault()
+                                        editor.chain().focus().mergeOrSplit().run()
+                                    }}
+                                    className="cursor-pointer"
+                                >
+                                    <TableCellsMerge className="h-4 w-4 mr-2" />
+                                    Merge/Split Cell
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                    onSelect={(e) => {
+                                        e.preventDefault()
+                                        editor.chain().focus().deleteTable().run()
+                                    }}
+                                    className="text-destructive cursor-pointer"
+                                >
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Delete Table
+                                </DropdownMenuItem>
+                            </>
+                        )}
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </ToolbarGroup>
 
             <ToolbarSeparator />
