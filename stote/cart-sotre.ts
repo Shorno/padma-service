@@ -1,6 +1,6 @@
-import {create} from "zustand";
-import {persist, createJSONStorage,} from "zustand/middleware";
-import {Product} from "@/db/schema";
+import { create } from "zustand";
+import { persist, createJSONStorage, } from "zustand/middleware";
+import { Service } from "@/db/schema";
 import {
     addToCart,
     updateCartItemQuantity,
@@ -10,7 +10,7 @@ import {
     getCartItems
 } from "@/app/actions/cart";
 
-export interface CartItem extends Product {
+export interface CartItem extends Service {
     quantity: number;
     subtotal: number;
 }
@@ -22,15 +22,15 @@ interface CartState {
     isOpen?: boolean;
     isSyncing: boolean;
     actions: {
-        addItem: (product: Product, isAuthenticated?: boolean) => Promise<void>;
+        addItem: (service: Service, isAuthenticated?: boolean) => Promise<void>;
         setIsOpen?: (isOpen: boolean) => void;
-        increment: (productId: number, isAuthenticated?: boolean) => Promise<void>;
-        decrement: (productId: number, isAuthenticated?: boolean) => Promise<void>;
-        removeItem: (productId: number, isAuthenticated?: boolean) => Promise<void>;
+        increment: (serviceId: number, isAuthenticated?: boolean) => Promise<void>;
+        decrement: (serviceId: number, isAuthenticated?: boolean) => Promise<void>;
+        removeItem: (serviceId: number, isAuthenticated?: boolean) => Promise<void>;
         clearCart: (isAuthenticated?: boolean) => Promise<void>;
         syncToDatabase: () => Promise<void>;
         loadFromDatabase: () => Promise<void>;
-        buyNow: (product: Product, quantity: number, isAuthenticated?: boolean) => Promise<void>;
+        buyNow: (service: Service, quantity: number, isAuthenticated?: boolean) => Promise<void>;
     };
 }
 
@@ -57,9 +57,9 @@ const useCartStore = create<CartState>()(
             isOpen: false,
             isSyncing: false,
             actions: {
-                async addItem(product: Product, isAuthenticated = false) {
+                async addItem(service: Service, isAuthenticated = false) {
                     set((state) => {
-                        const existingCartItemIndex = state.items.findIndex((existingCartItem) => existingCartItem.id === product.id);
+                        const existingCartItemIndex = state.items.findIndex((existingCartItem) => existingCartItem.id === service.id);
                         let updatedCartItems: CartItem[];
                         if (existingCartItemIndex !== -1) {
                             updatedCartItems = state.items.map((cartItem, currentIndex) => {
@@ -68,8 +68,8 @@ const useCartStore = create<CartState>()(
                                 }
                                 const existingCartItem = cartItem;
 
-                                const nextQuantity = product.stockQuantity !== undefined ?
-                                    Math.min(existingCartItem.quantity + 1, product.stockQuantity) : existingCartItem.quantity + 1
+                                const nextQuantity = service.stockQuantity !== undefined ?
+                                    Math.min(existingCartItem.quantity + 1, service.stockQuantity) : existingCartItem.quantity + 1
 
                                 const updatedCartItem: CartItem = {
                                     ...existingCartItem,
@@ -81,14 +81,14 @@ const useCartStore = create<CartState>()(
                             })
                         } else {
                             const newCartItem: CartItem = {
-                                ...product,
+                                ...service,
                                 quantity: 1,
-                                subtotal: calculateSubtotal(Number(product.price), 1)
+                                subtotal: calculateSubtotal(Number(service.price), 1)
                             };
                             updatedCartItems = [...state.items, newCartItem]
                         }
 
-                        const {totalQuantity, totalPrice} = calculateTotals(updatedCartItems)
+                        const { totalQuantity, totalPrice } = calculateTotals(updatedCartItems)
 
                         return {
                             items: updatedCartItems,
@@ -100,15 +100,15 @@ const useCartStore = create<CartState>()(
 
                     // Sync to database if authenticated
                     if (isAuthenticated) {
-                        await addToCart(product.id, 1);
+                        await addToCart(service.id, 1);
                     }
                 },
-                async increment(productId, isAuthenticated = false) {
+                async increment(serviceId, isAuthenticated = false) {
                     let newQuantity = 0;
 
                     set((state) => {
                         const items = state.items.map((item) => {
-                            if (item.id === productId) {
+                            if (item.id === serviceId) {
                                 const max = item.stockQuantity ?? Infinity;
                                 newQuantity = Math.min(item.quantity + 1, max);
                                 return {
@@ -119,7 +119,7 @@ const useCartStore = create<CartState>()(
                             }
                             return item;
                         })
-                        const {totalQuantity, totalPrice} = calculateTotals(items);
+                        const { totalQuantity, totalPrice } = calculateTotals(items);
 
                         return {
                             items,
@@ -130,15 +130,15 @@ const useCartStore = create<CartState>()(
 
                     // Sync to database if authenticated
                     if (isAuthenticated && newQuantity > 0) {
-                        await updateCartItemQuantity(productId, newQuantity);
+                        await updateCartItemQuantity(serviceId, newQuantity);
                     }
                 },
-                async decrement(productId, isAuthenticated = false) {
+                async decrement(serviceId, isAuthenticated = false) {
                     let newQuantity = 0;
 
                     set((state) => {
                         const items = state.items.map((item) => {
-                            if (item.id === productId) {
+                            if (item.id === serviceId) {
                                 newQuantity = Math.max(item.quantity - 1, 1);
                                 return {
                                     ...item,
@@ -148,7 +148,7 @@ const useCartStore = create<CartState>()(
                             }
                             return item;
                         })
-                        const {totalQuantity, totalPrice} = calculateTotals(items);
+                        const { totalQuantity, totalPrice } = calculateTotals(items);
                         return {
                             items,
                             totalQuantity,
@@ -158,23 +158,23 @@ const useCartStore = create<CartState>()(
 
                     // Sync to database if authenticated
                     if (isAuthenticated && newQuantity > 0) {
-                        await updateCartItemQuantity(productId, newQuantity);
+                        await updateCartItemQuantity(serviceId, newQuantity);
                     }
                 },
-                async removeItem(productId, isAuthenticated = false) {
+                async removeItem(serviceId, isAuthenticated = false) {
                     set((state) => {
-                        const items = state.items.filter((item) => item.id !== productId);
-                        const {totalQuantity, totalPrice} = calculateTotals(items);
-                        return {items, totalQuantity, totalPrice};
+                        const items = state.items.filter((item) => item.id !== serviceId);
+                        const { totalQuantity, totalPrice } = calculateTotals(items);
+                        return { items, totalQuantity, totalPrice };
                     });
 
                     // Sync to database if authenticated
                     if (isAuthenticated) {
-                        await removeFromCart(productId);
+                        await removeFromCart(serviceId);
                     }
                 },
                 setIsOpen(isOpen: boolean) {
-                    set(() => ({isOpen}));
+                    set(() => ({ isOpen }));
                 },
                 async clearCart(isAuthenticated = false) {
                     set(() => ({
@@ -225,7 +225,7 @@ const useCartStore = create<CartState>()(
                                 subtotal: calculateSubtotal(Number(item.product.price), item.quantity),
                             }));
 
-                            const {totalQuantity, totalPrice} = calculateTotals(cartItems);
+                            const { totalQuantity, totalPrice } = calculateTotals(cartItems);
 
                             set({
                                 items: cartItems,
@@ -239,7 +239,7 @@ const useCartStore = create<CartState>()(
                         set({ isSyncing: false });
                     }
                 },
-                async buyNow(product: Product, quantity: number, isAuthenticated = false) {
+                async buyNow(service: Service, quantity: number, isAuthenticated = false) {
                     set(() => ({
                         items: [],
                         totalQuantity: 0,
@@ -248,9 +248,9 @@ const useCartStore = create<CartState>()(
                     }));
 
                     const newCartItem: CartItem = {
-                        ...product,
+                        ...service,
                         quantity,
-                        subtotal: calculateSubtotal(Number(product.price), quantity)
+                        subtotal: calculateSubtotal(Number(service.price), quantity)
                     };
 
                     set({
@@ -263,7 +263,7 @@ const useCartStore = create<CartState>()(
                     // Sync to database if authenticated
                     if (isAuthenticated) {
                         await clearDbCart(); // Clear existing cart in the database
-                        await addToCart(product.id, quantity);
+                        await addToCart(service.id, quantity);
                     }
                 },
             }
@@ -282,7 +282,7 @@ const useCartStore = create<CartState>()(
             onRehydrateStorage: () => {
                 return (state) => {
                     if (state?.items) {
-                        const {totalQuantity, totalPrice} = calculateTotals(state.items);
+                        const { totalQuantity, totalPrice } = calculateTotals(state.items);
                         state.totalQuantity = totalQuantity;
                         state.totalPrice = totalPrice;
                     }

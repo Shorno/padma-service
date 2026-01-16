@@ -1,6 +1,6 @@
-import {useQuery} from "@tanstack/react-query";
-import {getCategoriesForSelect} from "@/app/(admin)/admin/dashboard/products/actions/get-categories-for-select";
-import {Category, SubCategory} from "@/db/schema/category";
+import { useQuery } from "@tanstack/react-query";
+import { getCategoriesForSelect } from "@/app/(admin)/admin/dashboard/services/actions/get-categories-for-select";
+import { Category, SubCategory } from "@/db/schema/category";
 
 export interface CategoryWithSubs extends Category {
     subCategory: SubCategory[]
@@ -18,7 +18,7 @@ export function useCategories() {
 }
 
 export function useSubCategories(categoryId: number | null) {
-    const {data: categories} = useCategories();
+    const { data: categories } = useCategories();
 
     if (!categoryId || !categories) {
         return [];

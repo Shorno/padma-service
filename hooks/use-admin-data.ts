@@ -1,6 +1,6 @@
-import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {getOrders} from "@/app/(admin)/admin/dashboard/orders/actions/get-orders";
-import getProducts from "@/app/(admin)/admin/dashboard/products/actions/get-products";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getOrders } from "@/app/(admin)/admin/dashboard/orders/actions/get-orders";
+import getServices from "@/app/(admin)/admin/dashboard/services/actions/get-services";
 
 // Hook for admin orders with automatic refetching
 export function useAdminOrders() {
@@ -14,12 +14,12 @@ export function useAdminOrders() {
     });
 }
 
-// Hook for admin products
-export function useAdminProducts() {
+// Hook for admin services
+export function useAdminServices() {
     return useQuery({
-        queryKey: ['admin-products'],
+        queryKey: ['admin-services'],
         queryFn: async () => {
-            return await getProducts();
+            return await getServices();
         },
         staleTime: 1000 * 60 * 5, // Cache for 5 minutes
     });
@@ -30,9 +30,9 @@ export function useInvalidateQueries() {
     const queryClient = useQueryClient();
 
     return {
-        invalidateProducts: () => {
-            queryClient.invalidateQueries({ queryKey: ['products'] });
-            queryClient.invalidateQueries({ queryKey: ['admin-products'] });
+        invalidateServices: () => {
+            queryClient.invalidateQueries({ queryKey: ['services'] });
+            queryClient.invalidateQueries({ queryKey: ['admin-services'] });
         },
         invalidateOrders: () => {
             queryClient.invalidateQueries({ queryKey: ['orders'] });
@@ -45,4 +45,3 @@ export function useInvalidateQueries() {
         },
     };
 }
-

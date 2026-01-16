@@ -12,10 +12,10 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
     title: {
-        template: '%s | KhaatiBazar Shop',
-        default: 'KhaatiBazar Shop',
+        template: '%s | Padma Service',
+        default: 'Padma Service',
     },
-    description: "Organic products shop.",
+    description: "",
     keywords: ['organic products', 'natural foods', 'healthy living', 'organic shop'],
     authors: [{ name: 'KhaatiBazar' }],
     openGraph: {
