@@ -1,19 +1,14 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, ExternalLink, Pencil } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
 import { Service, ServiceImage } from "@/db/schema/service"
 import { Category, SubCategory } from "@/db/schema/category"
-import EditServiceDialog from "./edit-service-dialog"
 import DeleteServiceDialog from "./delete-service-dialog"
 import { useTranslations } from "next-intl"
 
@@ -79,18 +74,7 @@ export function useServiceColumns() {
                 )
             },
         },
-        {
-            accessorKey: "description",
-            header: () => <div className="text-center">{t('description')}</div>,
-            cell: ({ row }) => {
-                const description = row.getValue("description") as string | null
-                return (
-                    <div className="text-center max-w-xs truncate">
-                        {description ? description.substring(0, 50) + (description.length > 50 ? '...' : '') : '-'}
-                    </div>
-                )
-            },
-        },
+
         {
             accessorKey: "isPublished",
             header: () => <div className="text-center">{t('status')}</div>,
@@ -127,22 +111,24 @@ export function useServiceColumns() {
                 const service = row.original
 
                 return (
-                    <div className="flex justify-center">
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                    <span className="sr-only">{t('openMenu')}</span>
-                                    <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <EditServiceDialog service={service} />
-                                <DeleteServiceDialog
-                                    serviceId={service.id}
-                                    serviceName={service.name}
-                                />
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                    <div className="flex items-center justify-center gap-1">
+                        <Button asChild variant="ghost" size="icon" className="h-8 w-8">
+                            <Link href={`/services/${service.category.slug}/${service.slug}`} target="_blank">
+                                <ExternalLink className="h-4 w-4" />
+                                <span className="sr-only">View</span>
+                            </Link>
+                        </Button>
+                        <Button asChild variant="ghost" size="icon" className="h-8 w-8">
+                            <Link href={`/admin/dashboard/services/${service.id}/edit`}>
+                                <Pencil className="h-4 w-4" />
+                                <span className="sr-only">Edit</span>
+                            </Link>
+                        </Button>
+                        <DeleteServiceDialog
+                            serviceId={service.id}
+                            serviceName={service.name}
+                            iconOnly
+                        />
                     </div>
                 )
             },

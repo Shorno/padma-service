@@ -23,9 +23,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 interface DeleteServiceDialogProps {
     serviceId: number
     serviceName: string
+    iconOnly?: boolean
 }
 
-export default function DeleteServiceDialog({ serviceId, serviceName }: DeleteServiceDialogProps) {
+export default function DeleteServiceDialog({ serviceId, serviceName, iconOnly = false }: DeleteServiceDialogProps) {
     const [open, setOpen] = React.useState(false)
     const queryClient = useQueryClient()
 
@@ -61,14 +62,25 @@ export default function DeleteServiceDialog({ serviceId, serviceName }: DeleteSe
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    className="w-full justify-start text-destructive hover:text-destructive"
-                >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Delete
-                </Button>
+                {iconOnly ? (
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                    >
+                        <Trash2 className="h-4 w-4" />
+                        <span className="sr-only">Delete</span>
+                    </Button>
+                ) : (
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full justify-start text-destructive hover:text-destructive"
+                    >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete
+                    </Button>
+                )}
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

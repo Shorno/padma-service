@@ -4,7 +4,7 @@ import getServices from "@/app/(admin)/admin/dashboard/services/actions/get-serv
 import ServiceTable from "@/app/(admin)/admin/dashboard/services/_components/service-table";
 import { useServiceColumns } from "@/app/(admin)/admin/dashboard/services/_components/service-columns";
 import { useQuery } from "@tanstack/react-query";
-import TableSkeleton from "@/app/(admin)/admin/dashboard/category/_components/table-skeleton";
+import ServiceTableSkeleton from "@/app/(admin)/admin/dashboard/services/_components/service-table-skeleton";
 
 export default function ServiceList() {
     const columns = useServiceColumns();
@@ -15,7 +15,7 @@ export default function ServiceList() {
     });
 
     if (isLoading) {
-        return <TableSkeleton />;
+        return <ServiceTableSkeleton />;
     }
 
     return <ServiceTable columns={columns} data={services} />;
