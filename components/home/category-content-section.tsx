@@ -8,16 +8,12 @@ import {
     Carousel,
     CarouselContent,
     CarouselItem,
-    CarouselPrevious,
-    CarouselNext,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import * as React from "react";
 
 interface CategoryContentSectionProps {
     content: CategoryContentResult;
-    selectedSubcategorySlug: string | null;
-    onSubcategoryClick: (slug: string) => void;
     isLoading: boolean;
 }
 
