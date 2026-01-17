@@ -133,7 +133,7 @@ export function CategoryCarousel({
                                     >
                                         <div
                                             className={cn(
-                                                "relative w-20 h-20 overflow-hidden transition-all",
+                                                "relative w-20 h-20 md:w-24 md:h-20 lg:w-20 lg:h-20 overflow-hidden transition-all",
                                                 isSelected
                                                     ? "ring-2 ring-primary ring-offset-2 rounded-lg"
                                                     : "group-hover:opacity-80"

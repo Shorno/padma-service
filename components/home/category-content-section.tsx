@@ -47,7 +47,7 @@ function SideCarousel({
                     <CarouselItem key={img.id} className="basis-full">
                         {img.link ? (
                             <Link href={img.link} className="block h-full">
-                                <div className="relative w-full h-32 sm:h-40 md:h-48 overflow-hidden rounded-lg">
+                                <div className="relative w-full h-32 sm:h-36 md:h-20 lg:h-44 overflow-hidden rounded-lg">
                                     <Image
                                         src={img.image}
                                         alt="Banner"
@@ -57,7 +57,7 @@ function SideCarousel({
                                 </div>
                             </Link>
                         ) : (
-                            <div className="relative w-full h-32 sm:h-40 md:h-48 overflow-hidden rounded-lg">
+                            <div className="relative w-full h-32 sm:h-36 md:h-20 lg:h-44 overflow-hidden rounded-lg">
                                 <Image
                                     src={img.image}
                                     alt="Banner"
@@ -130,7 +130,7 @@ export function CategoryContentSection({
                                         <CarouselItem key={img.id} className="basis-full">
                                             {img.link ? (
                                                 <Link href={img.link} className="block">
-                                                    <div className="relative w-full h-32 sm:h-40 md:h-48 overflow-hidden rounded-lg">
+                                                    <div className="relative w-full h-32 sm:h-36 md:h-20 lg:h-44 overflow-hidden rounded-lg">
                                                         <Image
                                                             src={img.image}
                                                             alt="Banner"
@@ -140,7 +140,7 @@ export function CategoryContentSection({
                                                     </div>
                                                 </Link>
                                             ) : (
-                                                <div className="relative w-full h-32 sm:h-40 md:h-48 overflow-hidden rounded-lg">
+                                                <div className="relative w-full h-32 sm:h-36 md:h-20 lg:h-44 overflow-hidden rounded-lg">
                                                     <Image
                                                         src={img.image}
                                                         alt="Banner"
@@ -152,15 +152,9 @@ export function CategoryContentSection({
                                         </CarouselItem>
                                     ))}
                                 </CarouselContent>
-                                {middleCarousel.images.length > 1 && (
-                                    <>
-                                        <CarouselPrevious variant="ghost" className="left-2 border-0 bg-white/80 hover:bg-white" />
-                                        <CarouselNext variant="ghost" className="right-2 border-0 bg-white/80 hover:bg-white" />
-                                    </>
-                                )}
                             </Carousel>
                         ) : selectedSubcategory?.image ? (
-                            <div className="relative w-full h-32 sm:h-40 md:h-48 overflow-hidden rounded-lg">
+                            <div className="relative w-full h-32 sm:h-36 md:h-20 lg:h-48 overflow-hidden rounded-lg">
                                 <Image
                                     src={selectedSubcategory.image}
                                     alt={selectedSubcategory.name}
@@ -169,7 +163,7 @@ export function CategoryContentSection({
                                 />
                             </div>
                         ) : (
-                            <div className="w-full h-32 sm:h-40 md:h-48 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <div className="w-full h-32 sm:h-36 md:h-40 bg-gray-100 rounded-lg flex items-center justify-center">
                                 <p className="text-gray-400">No banner image</p>
                             </div>
                         )}
@@ -194,8 +188,8 @@ export function CategoryContentSection({
 
                 {/* Header Section - Below Carousels */}
                 {selectedSubcategory?.header && (
-                    <div className="text-center mt-6">
-                        <h2 className="text-xl md:text-2xl font-semibold text-gray-900">
+                    <div className="text-center mt-6 mx-auto md:max-w-sm lg:max-w-none">
+                        <h2 className="text-base md:text-sm lg:text-2xl font-semibold text-gray-900">
                             {selectedSubcategory.header}
                         </h2>
                     </div>
@@ -211,7 +205,7 @@ export function CategoryContentSection({
                         className="flex-shrink-0"
                     />
                     <span
-                        className="text-sm md:text-base font-semibold"
+                        className="text-lg font-medium"
                         style={{ color: 'var(--booking-tagline)' }}
                     >
                         মোবাইলে বুকিং | কম খরচ | নিরাপত্তা

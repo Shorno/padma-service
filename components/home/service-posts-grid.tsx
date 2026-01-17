@@ -26,7 +26,7 @@ export function ServicePostsGrid({
                     className="group flex flex-col items-center"
                 >
                     {/* Fixed size image container */}
-                    <div className="relative w-full h-36 sm:h-44 md:h-48 overflow-hidden bg-white">
+                    <div className="relative w-full h-36 sm:h-40 md:h-24 lg:h-44 overflow-hidden bg-white rounded-lg">
                         <Image
                             src={service.image}
                             alt={service.name}
@@ -35,7 +35,7 @@ export function ServicePostsGrid({
                         />
                     </div>
                     {/* Centered name below image */}
-                    <h3 className="mt-2 text-sm font-medium text-gray-900 text-center group-hover:text-primary transition-colors line-clamp-2">
+                    <h3 className="mt-2 text-xs sm:text-sm font-medium text-gray-900 text-center group-hover:text-primary transition-colors line-clamp-2 max-w-full">
                         {service.name}
                     </h3>
                 </Link>
