@@ -24,7 +24,6 @@ interface CategoryContentSectionProps {
 // Reusable carousel component for side carousels
 function SideCarousel({
     images,
-    position
 }: {
     images: { id: number; image: string; link: string | null }[];
     position: "left" | "right";
@@ -202,15 +201,6 @@ export function CategoryContentSection({
                     </div>
                 )}
 
-                {/* Description / Tagline */}
-                {selectedSubcategory?.description && (
-                    <div className="text-center mt-2">
-                        <p className="text-sm md:text-base text-gray-600">
-                            {selectedSubcategory.description}
-                        </p>
-                    </div>
-                )}
-
                 {/* Booking Tagline */}
                 <div className="flex items-center justify-center gap-2 mt-3">
                     <Image
@@ -221,7 +211,7 @@ export function CategoryContentSection({
                         className="flex-shrink-0"
                     />
                     <span
-                        className="text-sm md:text-base font-medium font-semibold"
+                        className="text-sm md:text-base font-semibold"
                         style={{ color: 'var(--booking-tagline)' }}
                     >
                         মোবাইলে বুকিং | কম খরচ | নিরাপত্তা
@@ -265,7 +255,6 @@ export function CategoryContentSection({
                 )}
             </div>
 
-            {/* Static Footer Section */}
             <div className="container mx-auto px-4 md:px-6 py-6 border-t border-gray-200 mt-4">
                 <div className="flex flex-col items-center gap-2">
                     <div className="flex items-center gap-2">
@@ -293,6 +282,17 @@ export function CategoryContentSection({
                     </span>
                 </div>
             </div>
+
+
+            {/* Rich Text Description Section */}
+            {selectedSubcategory?.description && (
+                <div className="container mx-auto px-4 md:px-6 py-6">
+                    <div
+                        className="prose prose-sm md:prose-base max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary prose-strong:text-gray-900 prose-ul:text-gray-700 prose-ol:text-gray-700"
+                        dangerouslySetInnerHTML={{ __html: selectedSubcategory.description }}
+                    />
+                </div>
+            )}
         </section>
     );
 }
