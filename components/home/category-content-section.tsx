@@ -48,7 +48,7 @@ function SideCarousel({
                     <CarouselItem key={img.id} className="basis-full">
                         {img.link ? (
                             <Link href={img.link} className="block h-full">
-                                <div className="relative w-full h-40 sm:h-52 md:h-64 overflow-hidden rounded-lg">
+                                <div className="relative w-full h-32 sm:h-40 md:h-48 overflow-hidden rounded-lg">
                                     <Image
                                         src={img.image}
                                         alt="Banner"
@@ -58,7 +58,7 @@ function SideCarousel({
                                 </div>
                             </Link>
                         ) : (
-                            <div className="relative w-full h-40 sm:h-52 md:h-64 overflow-hidden rounded-lg">
+                            <div className="relative w-full h-32 sm:h-40 md:h-48 overflow-hidden rounded-lg">
                                 <Image
                                     src={img.image}
                                     alt="Banner"
@@ -76,8 +76,6 @@ function SideCarousel({
 
 export function CategoryContentSection({
     content,
-    selectedSubcategorySlug,
-    onSubcategoryClick,
     isLoading,
 }: CategoryContentSectionProps) {
     const middlePlugin = React.useRef(
@@ -133,7 +131,7 @@ export function CategoryContentSection({
                                         <CarouselItem key={img.id} className="basis-full">
                                             {img.link ? (
                                                 <Link href={img.link} className="block">
-                                                    <div className="relative w-full h-40 sm:h-52 md:h-64 overflow-hidden rounded-lg">
+                                                    <div className="relative w-full h-32 sm:h-40 md:h-48 overflow-hidden rounded-lg">
                                                         <Image
                                                             src={img.image}
                                                             alt="Banner"
@@ -143,7 +141,7 @@ export function CategoryContentSection({
                                                     </div>
                                                 </Link>
                                             ) : (
-                                                <div className="relative w-full h-40 sm:h-52 md:h-64 overflow-hidden rounded-lg">
+                                                <div className="relative w-full h-32 sm:h-40 md:h-48 overflow-hidden rounded-lg">
                                                     <Image
                                                         src={img.image}
                                                         alt="Banner"
@@ -163,7 +161,7 @@ export function CategoryContentSection({
                                 )}
                             </Carousel>
                         ) : selectedSubcategory?.image ? (
-                            <div className="relative w-full h-40 sm:h-52 md:h-64 overflow-hidden rounded-lg">
+                            <div className="relative w-full h-32 sm:h-40 md:h-48 overflow-hidden rounded-lg">
                                 <Image
                                     src={selectedSubcategory.image}
                                     alt={selectedSubcategory.name}
@@ -172,7 +170,7 @@ export function CategoryContentSection({
                                 />
                             </div>
                         ) : (
-                            <div className="w-full h-40 sm:h-52 md:h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <div className="w-full h-32 sm:h-40 md:h-48 bg-gray-100 rounded-lg flex items-center justify-center">
                                 <p className="text-gray-400">No banner image</p>
                             </div>
                         )}
@@ -212,10 +210,27 @@ export function CategoryContentSection({
                         </p>
                     </div>
                 )}
+
+                {/* Booking Tagline */}
+                <div className="flex items-center justify-center gap-2 mt-3">
+                    <Image
+                        src="/logos/call-icon.svg"
+                        alt="Phone"
+                        width={24}
+                        height={24}
+                        className="flex-shrink-0"
+                    />
+                    <span
+                        className="text-sm md:text-base font-medium font-semibold"
+                        style={{ color: 'var(--booking-tagline)' }}
+                    >
+                        মোবাইলে বুকিং | কম খরচ | নিরাপত্তা
+                    </span>
+                </div>
             </div>
 
             {/* Service Posts Grid */}
-            <div className="container mx-auto px-4 md:px-6 py-4">
+            <div className="container mx-auto py-4 px-4 md:px-6">
                 {isLoading ? (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                         {Array.from({ length: 8 }).map((_, i) => (
@@ -236,6 +251,47 @@ export function CategoryContentSection({
                         No services found in this category
                     </div>
                 )}
+
+                {/* See More Button */}
+                {services.length > 0 && (
+                    <div className="flex justify-center mt-6">
+                        <Link
+                            href={`/category/${content.category.slug}/${selectedSubcategory?.slug || ''}`}
+                            className="px-8 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-50 transition-colors text-sm font-medium"
+                        >
+                            আরও দেখুন
+                        </Link>
+                    </div>
+                )}
+            </div>
+
+            {/* Static Footer Section */}
+            <div className="container mx-auto px-4 md:px-6 py-6 border-t border-gray-200 mt-4">
+                <div className="flex flex-col items-center gap-2">
+                    <div className="flex items-center gap-2">
+                        <Image
+                            src="/logos/call-icon.svg"
+                            alt="পদ্মা সার্ভিস"
+                            width={32}
+                            height={32}
+                        />
+                        <span className="text-xl font-bold text-pink-600">
+                            পদ্মা সার্ভিস
+                        </span>
+                    </div>
+                    <a
+                        href="tel:01755997447"
+                        className="flex items-center bg-black text-white px-2 py-1 rounded-lg text-sm font-medium"
+                    >
+                        <span className="bg-navbar-primary text-white px-1 py-1 rounded mr-2 text-xs font-semibold">
+                            ক্লিক
+                        </span>
+                        01755997447
+                    </a>
+                    <span className="text-sm text-black font-semibold">
+                        এক ক্লিকে সকল সার্ভিস
+                    </span>
+                </div>
             </div>
         </section>
     );

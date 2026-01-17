@@ -18,14 +18,15 @@ export function ServicePostsGrid({
     if (services.length === 0) return null;
 
     return (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-6">
             {services.map((service) => (
                 <Link
                     key={service.id}
                     href={`/category/${categorySlug}/${subcategorySlug}/${service.slug}`}
-                    className="group"
+                    className="group flex flex-col items-center"
                 >
-                    <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
+                    {/* Fixed size image container */}
+                    <div className="relative w-full h-36 sm:h-44 md:h-48 overflow-hidden bg-white">
                         <Image
                             src={service.image}
                             alt={service.name}
@@ -33,7 +34,8 @@ export function ServicePostsGrid({
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                     </div>
-                    <h3 className="mt-2 text-sm font-medium text-gray-900 group-hover:text-primary transition-colors line-clamp-2">
+                    {/* Centered name below image */}
+                    <h3 className="mt-2 text-sm font-medium text-gray-900 text-center group-hover:text-primary transition-colors line-clamp-2">
                         {service.name}
                     </h3>
                 </Link>

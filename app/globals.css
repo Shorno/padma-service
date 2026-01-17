@@ -91,6 +91,9 @@
 
 
     --banner-heeader-color: #4D2800;
+
+    /* Booking Tagline Color */
+    --booking-tagline: #007256;
 }
 
 .dark {
@@ -213,6 +216,9 @@
 
     /* Banner Colors for Tailwind */
     --color-banner-header: var(--banner-heeader-color);
+
+    /* Booking Tagline Color for Tailwind */
+    --color-booking-tagline: var(--booking-tagline);
 }
 
 @layer base {
