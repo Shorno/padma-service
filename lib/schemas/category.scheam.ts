@@ -35,7 +35,10 @@ export const createCategorySchema = z.object({
 })
 
 export const createSubcategorySchema = createCategorySchema.extend({
-    categoryId: z.number({ error: "Category ID is required." }).int().nonoptional()
+    categoryId: z.number({ error: "Category ID is required." }).int().nonoptional(),
+    header: z.string().max(255, "Header must be at most 255 characters.").optional(),
+    buttonLabel: z.string().max(100, "Button label must be at most 100 characters.").optional(),
+    description: z.string().optional(),
 })
 
 export const updateCategorySchema = createCategorySchema.extend({

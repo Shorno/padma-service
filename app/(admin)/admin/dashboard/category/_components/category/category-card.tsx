@@ -2,7 +2,8 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { ChevronDown, ChevronRight, MoreHorizontal } from "lucide-react"
+import Link from "next/link"
+import { ChevronDown, ChevronRight, MoreHorizontal, Plus } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -20,7 +21,6 @@ import {
 import { CategoryWithSubcategories } from "./category-columns"
 import EditCategoryDialog from "./edit-category-dialog"
 import DeleteCategoryDialog from "./delete-category-dialog"
-import NewSubcategoryDialog from "../subcategory/new-subcategory-dialog"
 import SubcategoryExpandedRow from "../subcategory/subcategory-expanded-row"
 
 interface CategoryCardProps {
@@ -91,14 +91,15 @@ export default function CategoryCard({ category }: CategoryCardProps) {
                 <CollapsibleContent>
                     <div className="px-3 pb-3 pt-0">
                         <div className="pt-3 border-t">
-                            <div className="flex items-center justify-between mb-3">
-                                <span className="text-sm text-muted-foreground">
-                                    {category.subCategory.length} subcategories
+                            <div className="flex items-center justify-between mb-2">
+                                <span className="text-xs text-muted-foreground">
+                                    {category.subCategory.length} items
                                 </span>
-                                <NewSubcategoryDialog
-                                    categoryId={category.id}
-                                    categoryName={category.name}
-                                />
+                                <Button asChild size="icon" variant="ghost" className="h-6 w-6">
+                                    <Link href={`/admin/dashboard/category/${category.id}/subcategory/new`}>
+                                        <Plus className="h-3.5 w-3.5" />
+                                    </Link>
+                                </Button>
                             </div>
                             <SubcategoryExpandedRow category={category} />
                         </div>

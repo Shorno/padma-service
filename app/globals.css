@@ -16,7 +16,7 @@
     --card-foreground: oklch(0.1908 0.0020 106.5859);
     --popover: oklch(1.0000 0 0);
     --popover-foreground: oklch(0.2671 0.0196 98.9390);
-    --primary: oklch(0.6171 0.1375 39.0427);
+    --primary: oklch(0.633 0.217 359.797);
     --primary-foreground: oklch(1.0000 0 0);
     --secondary: oklch(0.9245 0.0138 92.9892);
     --secondary-foreground: oklch(0.4334 0.0177 98.6048);
@@ -62,6 +62,38 @@
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
     --tracking-normal: 0em;
     --spacing: 0.25rem;
+
+    /* Navbar Design Tokens from Figma */
+    --navbar-primary: #E93A85;
+    --navbar-deep: #B50C55;
+    --navbar-light: #FFFFFF;
+    --navbar-border: #ECECEC;
+    --navbar-text-dark: #000000;
+    --navbar-text-muted: #999085;
+    --nav-link-primary: #e46499;
+
+    /* Navbar Typography */
+    --navbar-font-brand: 18px;
+    --navbar-font-btn: 14px;
+    --navbar-font-link: 16px;
+    --navbar-font-tagline: 14px;
+
+    /* Navbar Spacing */
+    --navbar-height: 138px;
+    --navbar-content-height: 116px;
+    --navbar-padding-bottom: 14px;
+    --navbar-curve-height: 20px;
+
+    /* Navbar Border Radius */
+    --navbar-radius-sm: 4px;
+    --navbar-radius-md: 6px;
+    --navbar-radius-curve: 20px;
+
+
+    --banner-heeader-color: #4D2800;
+
+    /* Booking Tagline Color */
+    --booking-tagline: #007256;
 }
 
 .dark {
@@ -71,7 +103,7 @@
     --card-foreground: oklch(0.9818 0.0054 95.0986);
     --popover: oklch(0.3085 0.0035 106.6039);
     --popover-foreground: oklch(0.9211 0.0040 106.4781);
-    --primary: oklch(0.6724 0.1308 38.7559);
+    --primary: oklch(0.633 0.217 359.797);
     --primary-foreground: oklch(1.0000 0 0);
     --secondary: oklch(0.9818 0.0054 95.0986);
     --secondary-foreground: oklch(0.3085 0.0035 106.6039);
@@ -115,6 +147,8 @@
     --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
     --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+
+    --color-deep-red: oklch(0.501 0.196 4.725);
 }
 
 @theme inline {
@@ -168,6 +202,23 @@
     --shadow-lg: var(--shadow-lg);
     --shadow-xl: var(--shadow-xl);
     --shadow-2xl: var(--shadow-2xl);
+
+    /* Navbar Colors for Tailwind */
+    --color-navbar-primary: var(--navbar-primary);
+    --color-navbar-deep: var(--navbar-deep);
+    --color-navbar-light: var(--navbar-light);
+    --color-navbar-border: var(--navbar-border);
+    --color-navbar-text-dark: var(--navbar-text-dark);
+    --color-navbar-text-muted: var(--navbar-text-muted);
+    --color-nav-link-primary: var(--nav-link-primary);
+
+
+
+    /* Banner Colors for Tailwind */
+    --color-banner-header: var(--banner-heeader-color);
+
+    /* Booking Tagline Color for Tailwind */
+    --color-booking-tagline: var(--booking-tagline);
 }
 
 @layer base {

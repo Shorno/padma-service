@@ -13,9 +13,11 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
+import Link from "next/link"
+import { Plus, ChevronLeft, ChevronRight, LayoutGrid } from "lucide-react"
 
-import {Button} from "@/components/ui/button"
-import {Input} from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import {
     Table,
     TableBody,
@@ -24,10 +26,18 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import NewSubcategoryDialog from "@/app/(admin)/admin/dashboard/category/_components/subcategory/new-subcategory-dialog"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { useQuery } from "@tanstack/react-query"
 import getSubcategories from "@/app/(admin)/admin/dashboard/category/actions/subcategory/get-subcategories"
 import TableSkeleton from "@/app/(admin)/admin/dashboard/category/_components/table-skeleton"
+import SubcategoryCard from "./subcategory-card"
+import { SubCategory } from "@/db/schema/category"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -35,11 +45,11 @@ interface DataTableProps<TData, TValue> {
     categoryName: string
 }
 
-export default function SubcategoryTable<TData, TValue>({
-                                                            columns,
-                                                            categoryId,
-                                                            categoryName,
-                                                        }: DataTableProps<TData, TValue>) {
+export default function SubcategoryTable<TData extends SubCategory, TValue>({
+    columns,
+    categoryId,
+    categoryName,
+}: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -69,34 +79,54 @@ export default function SubcategoryTable<TData, TValue>({
         },
     })
 
+    const currentPage = table.getState().pagination.pageIndex + 1
+    const totalPages = table.getPageCount()
+
     if (isLoading) {
         return <TableSkeleton />
     }
 
     return (
-        <div className="w-full">
-            <div className="flex items-center justify-between py-4 gap-2">
+        <div className="w-full space-y-4">
+            {/* Header with Title */}
+            <div className="flex items-center gap-3 pb-2">
+                <div className="p-2 rounded-lg bg-primary/10">
+                    <LayoutGrid className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                    <h2 className="text-lg font-semibold">Subcategories</h2>
+                    <p className="text-sm text-muted-foreground">{categoryName}</p>
+                </div>
+            </div>
+
+            {/* Search + Add Button */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                 <Input
                     placeholder="Filter subcategories..."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("name")?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm"
+                    className="w-full sm:max-w-sm"
                 />
-                <NewSubcategoryDialog
-                    categoryId={categoryId}
-                    categoryName={categoryName}
-                />
+                <Button asChild>
+                    <Link href={`/admin/dashboard/category/${categoryId}/subcategory/new`}>
+                        <Plus className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Add Subcategory</span>
+                        <span className="sm:hidden">Add</span>
+                    </Link>
+                </Button>
             </div>
-            <div className="rounded-md border">
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block rounded-lg border shadow-sm overflow-hidden">
                 <Table>
-                    <TableHeader>
+                    <TableHeader className="bg-muted/50">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead key={header.id} className="font-semibold">
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
@@ -139,28 +169,74 @@ export default function SubcategoryTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex items-center justify-end space-x-2 py-4">
-                <div className="flex-1 text-sm text-muted-foreground">
-                    {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                    {table.getFilteredRowModel().rows.length} row(s) selected.
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-3">
+                {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                        <SubcategoryCard
+                            key={row.id}
+                            subcategory={row.original}
+                            categoryId={categoryId}
+                        />
+                    ))
+                ) : (
+                    <div className="text-center py-8 text-muted-foreground border rounded-lg">
+                        No subcategories found. Create one to get started.
+                    </div>
+                )}
+            </div>
+
+            {/* Pagination */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+                {/* Page Size Selector */}
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span className="hidden sm:inline">Rows per page:</span>
+                    <span className="sm:hidden">Per page:</span>
+                    <Select
+                        value={`${table.getState().pagination.pageSize}`}
+                        onValueChange={(value) => {
+                            table.setPageSize(Number(value))
+                        }}
+                    >
+                        <SelectTrigger className="h-8 w-[70px]">
+                            <SelectValue placeholder={table.getState().pagination.pageSize} />
+                        </SelectTrigger>
+                        <SelectContent side="top">
+                            {[5, 10, 20, 30, 50].map((pageSize) => (
+                                <SelectItem key={pageSize} value={`${pageSize}`}>
+                                    {pageSize}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
-                <div className="space-x-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                    >
-                        Previous
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                    >
-                        Next
-                    </Button>
+
+                {/* Page Info and Navigation */}
+                <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">
+                        Page {currentPage} of {totalPages || 1}
+                    </span>
+                    <div className="flex gap-1">
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => table.previousPage()}
+                            disabled={!table.getCanPreviousPage()}
+                        >
+                            <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => table.nextPage()}
+                            disabled={!table.getCanNextPage()}
+                        >
+                            <ChevronRight className="h-4 w-4" />
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>

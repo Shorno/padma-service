@@ -3,10 +3,10 @@
 import { SubCategory } from "@/db/schema/category"
 import { CategoryWithSubcategories } from "../category/category-columns"
 import Image from "next/image"
+import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Pencil, Trash2 } from "lucide-react"
-import EditSubcategoryDialog from "./edit-subcategory-dialog"
+import { Trash2, ExternalLink } from "lucide-react"
 import DeleteSubcategoryDialog from "./delete-subcategory-dialog"
 
 interface SubcategoryExpandedRowProps {
@@ -18,89 +18,77 @@ export default function SubcategoryExpandedRow({ category }: SubcategoryExpanded
 
     if (subcategories.length === 0) {
         return (
-            <div className="text-center text-muted-foreground py-4">
-                No subcategories found
+            <div className="text-center text-muted-foreground py-4 text-sm">
+                No subcategories yet
             </div>
         )
     }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="space-y-1">
             {subcategories.map((subcategory) => (
-                <SubcategoryCard
+                <div
                     key={subcategory.id}
-                    subcategory={subcategory}
-                    categoryName={category.name}
-                />
-            ))}
-        </div>
-    )
-}
+                    className="flex items-center gap-3 rounded hover:bg-accent/50 transition-colors group"
+                >
+                    {/* Clickable Row - navigates to edit */}
+                    <Link
+                        href={`/admin/dashboard/category/${category.id}/subcategory/${subcategory.id}/edit`}
+                        className="flex items-center gap-3 flex-1 min-w-0 px-2 py-2"
+                    >
+                        {/* Logo */}
+                        <div className="relative w-7 h-7 shrink-0 rounded overflow-hidden bg-muted">
+                            {subcategory.logo ? (
+                                <Image
+                                    src={subcategory.logo}
+                                    alt={subcategory.name}
+                                    fill
+                                    className="object-contain"
+                                />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center text-[8px] text-muted-foreground">
+                                    —
+                                </div>
+                            )}
+                        </div>
 
-interface SubcategoryCardProps {
-    subcategory: SubCategory
-    categoryName: string
-}
+                        {/* Name */}
+                        <span className="flex-1 text-sm truncate">{subcategory.name}</span>
 
-function SubcategoryCard({ subcategory, categoryName }: SubcategoryCardProps) {
-    return (
-        <div className="flex items-center gap-3 p-3 rounded-lg border bg-background hover:bg-accent/50 transition-colors">
-            {/* Logo/Image */}
-            <div className="relative w-10 h-10 shrink-0 rounded-md overflow-hidden bg-muted">
-                {subcategory.logo ? (
-                    <Image
-                        src={subcategory.logo}
-                        alt={subcategory.name}
-                        fill
-                        className="object-contain"
-                    />
-                ) : subcategory.image ? (
-                    <Image
-                        src={subcategory.image}
-                        alt={subcategory.name}
-                        fill
-                        className="object-cover"
-                    />
-                ) : (
-                    <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">
-                        N/A
+                        {/* Status */}
+                        {!subcategory.isActive && (
+                            <Badge variant="secondary" className="text-[10px] h-5 shrink-0">
+                                Inactive
+                            </Badge>
+                        )}
+
+                        {/* Edit indicator on hover */}
+                        <ExternalLink className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                    </Link>
+
+                    {/* Delete button - always visible on mobile, hover on desktop */}
+                    <div className="pr-2 shrink-0 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                        <DeleteSubcategoryDialog
+                            subcategory={subcategory}
+                            trigger={
+                                <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive hover:bg-destructive/10">
+                                    <Trash2 className="h-3.5 w-3.5" />
+                                </Button>
+                            }
+                        />
                     </div>
-                )}
-            </div>
-
-            {/* Content */}
-            <div className="flex-1 min-w-0">
-                <div className="font-medium text-sm truncate">
-                    {subcategory.name}
                 </div>
-            </div>
+            ))}
 
-            {/* Status */}
-            <Badge
-                variant={subcategory.isActive ? "default" : "secondary"}
-                className="text-xs shrink-0"
-            >
-                {subcategory.isActive ? "Active" : "Inactive"}
-            </Badge>
-
-            {/* Actions */}
-            <div className="flex gap-1 shrink-0">
-                <EditSubcategoryDialog
-                    subcategory={subcategory}
-                    trigger={
-                        <Button variant="ghost" size="icon" className="h-7 w-7">
-                            <Pencil className="h-3 w-3" />
-                        </Button>
-                    }
-                />
-                <DeleteSubcategoryDialog
-                    subcategory={subcategory}
-                    trigger={
-                        <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive">
-                            <Trash2 className="h-3 w-3" />
-                        </Button>
-                    }
-                />
+            {/* View All link */}
+            <div className="pt-2 border-t mt-2">
+                <Link
+                    href={`/admin/dashboard/category/${category.id}`}
+                    className="text-xs text-primary hover:underline flex items-center gap-1"
+                >
+                    View all subcategories
+                    <ExternalLink className="h-3 w-3" />
+                </Link>
             </div>
         </div>
     )

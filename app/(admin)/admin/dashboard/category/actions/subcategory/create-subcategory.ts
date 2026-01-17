@@ -1,29 +1,31 @@
 "use server"
 
-import {CreateSubcategoryFormValues, createSubcategorySchema} from "@/lib/schemas/category.scheam"
-import {z} from "zod"
-import {db} from "@/db/config"
-import {subCategory} from "@/db/schema";
-import {revalidatePath} from "next/cache";
-import {checkAuth} from "@/app/actions/auth/checkAuth";
+import { createSubcategorySchema } from "@/lib/schemas/category.scheam"
+import { z } from "zod"
+import { db } from "@/db/config"
+import { subCategory, SubCategory } from "@/db/schema";
+import { revalidatePath } from "next/cache";
+import { checkAuth } from "@/app/actions/auth/checkAuth";
 
 export type ActionResult<TData = unknown> =
     | {
-    success: true
-    status: number
-    data: TData
-    message?: string
-}
+        success: true
+        status: number
+        data: TData
+        message?: string
+    }
     | {
-    success: false
-    status: number
-    error: string
-    details?: unknown
-}
+        success: false
+        status: number
+        error: string
+        details?: unknown
+    }
+
+type CreateSubcategoryInput = z.infer<typeof createSubcategorySchema>
 
 export default async function createSubcategory(
-    formData: CreateSubcategoryFormValues
-): Promise<ActionResult<CreateSubcategoryFormValues>> {
+    formData: CreateSubcategoryInput
+): Promise<ActionResult<SubCategory>> {
     const session = await checkAuth()
 
     if (!session?.user || session?.user.role !== "admin") {
@@ -48,7 +50,12 @@ export default async function createSubcategory(
 
         const validData = result.data
 
-        const newSubcategory = await db.insert(subCategory).values(validData).returning()
+        const newSubcategory = await db.insert(subCategory).values({
+            ...validData,
+            header: validData.header ?? null,
+            buttonLabel: validData.buttonLabel ?? null,
+            description: validData.description ?? null,
+        }).returning()
 
         // Revalidate only client-facing routes (not admin dashboard)
         revalidatePath("/products")

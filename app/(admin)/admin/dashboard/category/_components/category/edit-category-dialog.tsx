@@ -153,7 +153,7 @@ export default function EditCategoryDialog({ category }: EditCategoryDialogProps
                                 return (
                                     <Field data-invalid={isInvalid}>
                                         <FieldLabel htmlFor={field.name}>Logo</FieldLabel>
-                                        <div className="w-32">
+                                        <div className="w-32!">
                                             <ImageUploader
                                                 value={field.state.value ?? ""}
                                                 onChange={field.handleChange}
