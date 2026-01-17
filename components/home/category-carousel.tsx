@@ -15,12 +15,14 @@ interface CategoryCarouselProps {
     categories: Category[];
     selectedCategorySlug?: string | null;
     onCategoryClick?: (slug: string) => void;
+    onCategoryHover?: (slug: string) => void;
 }
 
 export function CategoryCarousel({
     categories,
     selectedCategorySlug,
-    onCategoryClick
+    onCategoryClick,
+    onCategoryHover
 }: CategoryCarouselProps) {
     const groupedCategories: Category[][] = [];
     for (let i = 0; i < categories.length; i += 8) {
@@ -30,6 +32,12 @@ export function CategoryCarousel({
     const handleClick = (slug: string) => {
         if (onCategoryClick) {
             onCategoryClick(slug);
+        }
+    };
+
+    const handleHover = (slug: string) => {
+        if (onCategoryHover) {
+            onCategoryHover(slug);
         }
     };
 
@@ -58,6 +66,7 @@ export function CategoryCarousel({
                                             <button
                                                 key={category.id}
                                                 onClick={() => handleClick(category.slug)}
+                                                onMouseEnter={() => handleHover(category.slug)}
                                                 className={cn(
                                                     "flex flex-col items-center gap-1 group",
                                                     "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg p-1"
@@ -126,6 +135,7 @@ export function CategoryCarousel({
                                 >
                                     <button
                                         onClick={() => handleClick(category.slug)}
+                                        onMouseEnter={() => handleHover(category.slug)}
                                         className={cn(
                                             "flex flex-col items-center gap-2 group w-full",
                                             "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg p-1"
