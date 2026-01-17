@@ -1,6 +1,30 @@
 import { notFound } from "next/navigation";
 import { getServiceBySlug } from "@/app/actions/services/get-service-by-slug";
+import { db } from "@/db/config";
+import { service } from "@/db/schema/service";
+import { eq, isNull } from "drizzle-orm";
 import Image from "next/image";
+
+// Generate static params for services directly under category (no subcategory)
+export async function generateStaticParams() {
+    const services = await db.query.service.findMany({
+        where: (svc, { eq, and, isNull }) => and(
+            eq(svc.isPublished, true),
+            isNull(svc.subCategoryId)
+        ),
+        with: {
+            category: {
+                columns: { slug: true },
+            },
+        },
+        columns: { slug: true },
+    });
+
+    return services.map((svc) => ({
+        categorySlug: svc.category.slug,
+        serviceSlug: svc.slug,
+    }));
+}
 
 interface ServiceDetailPageProps {
     params: Promise<{ categorySlug: string; serviceSlug: string }>;

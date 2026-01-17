@@ -6,6 +6,18 @@ import { service } from "@/db/schema/service";
 import Link from "next/link";
 import Image from "next/image";
 
+// Generate static params for all categories at build time
+export async function generateStaticParams() {
+    const categories = await db.query.category.findMany({
+        where: eq(category.isActive, true),
+        columns: { slug: true },
+    });
+
+    return categories.map((cat) => ({
+        categorySlug: cat.slug,
+    }));
+}
+
 interface CategoryPageProps {
     params: Promise<{ categorySlug: string }>;
 }

@@ -6,6 +6,24 @@ import { service } from "@/db/schema/service";
 import Image from "next/image";
 import Link from "next/link";
 
+// Generate static params for all subcategories at build time
+export async function generateStaticParams() {
+    const subcategories = await db.query.subCategory.findMany({
+        where: eq(subCategory.isActive, true),
+        with: {
+            category: {
+                columns: { slug: true },
+            },
+        },
+        columns: { slug: true },
+    });
+
+    return subcategories.map((sub) => ({
+        categorySlug: sub.category.slug,
+        subcategorySlug: sub.slug,
+    }));
+}
+
 interface SubcategoryPageProps {
     params: Promise<{ categorySlug: string; subcategorySlug: string }>;
 }
