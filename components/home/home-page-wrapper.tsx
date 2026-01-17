@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { CategoryCarousel } from "./category-carousel";
 import { BannerSection } from "./banner-section";
 import { CategoryContentSection } from "./category-content-section";
+import { CategoryContentSkeleton } from "./category-content-skeleton";
 import { getCategoryContent, type CategoryContentResult } from "@/app/(client)/actions/get-category-content";
 import { type Category } from "@/db/schema/category";
 import { type Banner, type BannerImage } from "@/db/schema/banner";
@@ -13,45 +15,58 @@ type BannerWithImages = Banner & { images: BannerImage[] };
 interface HomePageWrapperProps {
     categories: Category[];
     banner: BannerWithImages | null | undefined;
+    initialCategoryContent?: CategoryContentResult | null;
+    initialCategorySlug?: string | null;
 }
 
-export function HomePageWrapper({ categories, banner }: HomePageWrapperProps) {
+export function HomePageWrapper({
+    categories,
+    banner,
+    initialCategoryContent,
+    initialCategorySlug
+}: HomePageWrapperProps) {
     const [selectedCategorySlug, setSelectedCategorySlug] = useState<string | null>(null);
-    const [categoryContent, setCategoryContent] = useState<CategoryContentResult | null>(null);
-    const [selectedSubcategorySlug, setSelectedSubcategorySlug] = useState<string | null>(null);
-    const [isPending, startTransition] = useTransition();
+    const queryClient = useQueryClient();
+
+    // Seed the cache with server-fetched data on mount
+    useEffect(() => {
+        if (initialCategoryContent && initialCategorySlug) {
+            queryClient.setQueryData(
+                ["categoryContent", initialCategorySlug],
+                initialCategoryContent
+            );
+        }
+    }, [initialCategoryContent, initialCategorySlug, queryClient]);
+
+    // Use TanStack Query for fetching category content with caching
+    const { data: categoryContent, isLoading, isFetching } = useQuery({
+        queryKey: ["categoryContent", selectedCategorySlug],
+        queryFn: () => getCategoryContent(selectedCategorySlug!),
+        enabled: !!selectedCategorySlug,
+        staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+        gcTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
+    });
 
     const handleCategoryClick = (categorySlug: string) => {
         // Toggle behavior: clicking same category returns to home
         if (selectedCategorySlug === categorySlug) {
             setSelectedCategorySlug(null);
-            setCategoryContent(null);
-            setSelectedSubcategorySlug(null);
             return;
         }
-
         setSelectedCategorySlug(categorySlug);
-        setSelectedSubcategorySlug(null);
+    };
 
-        startTransition(async () => {
-            const content = await getCategoryContent(categorySlug);
-            setCategoryContent(content);
-            if (content.selectedSubcategory) {
-                setSelectedSubcategorySlug(content.selectedSubcategory.slug);
-            }
+    // Prefetch category data on hover for faster loading
+    const handleCategoryHover = (categorySlug: string) => {
+        queryClient.prefetchQuery({
+            queryKey: ["categoryContent", categorySlug],
+            queryFn: () => getCategoryContent(categorySlug),
+            staleTime: 5 * 60 * 1000,
         });
     };
 
-    const handleSubcategoryClick = (subcategorySlug: string) => {
-        if (!selectedCategorySlug || selectedSubcategorySlug === subcategorySlug) return;
-
-        setSelectedSubcategorySlug(subcategorySlug);
-
-        startTransition(async () => {
-            const content = await getCategoryContent(selectedCategorySlug, subcategorySlug);
-            setCategoryContent(content);
-        });
-    };
+    // Show skeleton when loading initial data (not cached)
+    const showSkeleton = selectedCategorySlug && isLoading;
 
     return (
         <>
@@ -59,14 +74,15 @@ export function HomePageWrapper({ categories, banner }: HomePageWrapperProps) {
                 categories={categories}
                 selectedCategorySlug={selectedCategorySlug}
                 onCategoryClick={handleCategoryClick}
+                onCategoryHover={handleCategoryHover}
             />
 
-            {selectedCategorySlug && categoryContent ? (
+            {showSkeleton ? (
+                <CategoryContentSkeleton />
+            ) : selectedCategorySlug && categoryContent ? (
                 <CategoryContentSection
                     content={categoryContent}
-                    selectedSubcategorySlug={selectedSubcategorySlug}
-                    onSubcategoryClick={handleSubcategoryClick}
-                    isLoading={isPending}
+                    isLoading={isFetching}
                 />
             ) : (
                 <>
@@ -77,3 +93,4 @@ export function HomePageWrapper({ categories, banner }: HomePageWrapperProps) {
         </>
     );
 }
+
