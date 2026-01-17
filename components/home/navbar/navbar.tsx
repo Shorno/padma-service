@@ -33,7 +33,7 @@ export default function Navbar() {
                         {/* Left Section: Logo and Contact */}
                         <div className="flex flex-col items-start flex-shrink min-w-0">
                             {/* Logo Row */}
-                            <div className="flex items-center gap-2">
+                            <Link className="flex items-center gap-2" href={"/"}>
                                 <Image
                                     src="/logos/call-icon.svg"
                                     alt="পদ্মা সার্ভিস"
@@ -47,7 +47,7 @@ export default function Navbar() {
                                 >
                                     পদ্মা সার্ভিস
                                 </span>
-                            </div>
+                            </Link>
 
                             {/* Phone Number Tag + Mobile All Services - Same Row */}
                             <div className="flex items-center gap-2 mt-2">
