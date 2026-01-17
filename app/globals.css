@@ -94,6 +94,8 @@
 
     /* Booking Tagline Color */
     --booking-tagline: #007256;
+
+    --service-back-button-label: #403D3D;
 }
 
 .dark {
@@ -149,6 +151,7 @@
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 
     --color-deep-red: oklch(0.501 0.196 4.725);
+
 }
 
 @theme inline {
@@ -219,6 +222,9 @@
 
     /* Booking Tagline Color for Tailwind */
     --color-booking-tagline: var(--booking-tagline);
+
+
+    --color-service-back-button-label: var(--service-back-button-label);
 }
 
 @layer base {
