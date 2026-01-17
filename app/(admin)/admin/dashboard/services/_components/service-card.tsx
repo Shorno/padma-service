@@ -34,7 +34,10 @@ export default function ServiceCard({ service }: ServiceCardProps) {
                         <h3 className="font-medium truncate">{service.name}</h3>
                         <div className="flex items-center gap-1 shrink-0">
                             <Button asChild variant="ghost" size="icon" className="h-7 w-7">
-                                <Link href={`/services/${service.category.slug}/${service.slug}`} target="_blank">
+                                <Link href={service.subCategory
+                                    ? `/category/${service.category.slug}/subcategory/${service.subCategory.slug}/${service.slug}`
+                                    : `/category/${service.category.slug}/${service.slug}`
+                                } target="_blank">
                                     <ExternalLink className="h-3.5 w-3.5" />
                                 </Link>
                             </Button>

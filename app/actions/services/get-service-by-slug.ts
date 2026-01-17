@@ -17,6 +17,8 @@ export async function getServiceBySlug(slug: string) {
             subCategory: {
                 columns: {
                     name: true,
+                    slug: true,
+                    buttonLabel : true,
                 },
             },
             images: true,
