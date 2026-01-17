@@ -4,7 +4,7 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "@tanstack/react-form"
 import { toast } from "sonner"
-import { ArrowLeft, Loader, Eye, EyeOff, Images } from "lucide-react"
+import { ArrowLeft, Loader, Eye, EyeOff, Images, Settings, FileText } from "lucide-react"
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
@@ -49,6 +49,7 @@ export default function SubcategoryNewForm({ categoryId, categoryName }: Subcate
         defaultValues: {
             name: "",
             header: "",
+            buttonLabel: "",
             description: "",
             slug: "",
             categoryId: categoryId,
@@ -119,14 +120,17 @@ export default function SubcategoryNewForm({ categoryId, categoryName }: Subcate
                     form.handleSubmit()
                 }}
             >
-                <div className="flex flex-col lg:flex-row">
+                <div className="flex flex-col xl:flex-row">
                     {/* Main Content Area */}
-                    <main className="flex-1 p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-6 order-2 lg:order-1">
-                        {/* Two Column Layout: Basic Info */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {/* Left Column: Name, Header, Slug */}
-                            <div className="space-y-4">
-                                <h3 className="text-sm font-medium text-muted-foreground">Basic Information</h3>
+                    <main className="flex-1 p-3 sm:p-4 xl:p-6 space-y-4 sm:space-y-6 order-2 xl:order-1">
+                        {/* Two Column Layout: Basic Info & Settings */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                            {/* Left Column: Basic Information */}
+                            <div className="rounded-lg border bg-card p-4 space-y-4">
+                                <div className="flex items-center gap-2 pb-2 border-b">
+                                    <FileText className="h-4 w-4 text-primary" />
+                                    <h3 className="text-sm font-semibold">Basic Information</h3>
+                                </div>
 
                                 {/* Name Field */}
                                 <form.Field name="name">
@@ -196,8 +200,11 @@ export default function SubcategoryNewForm({ categoryId, categoryName }: Subcate
                             </div>
 
                             {/* Right Column: Settings */}
-                            <div className="space-y-4">
-                                <h3 className="text-sm font-medium text-muted-foreground">Settings</h3>
+                            <div className="rounded-lg border bg-card p-4 space-y-4">
+                                <div className="flex items-center gap-2 pb-2 border-b">
+                                    <Settings className="h-4 w-4 text-primary" />
+                                    <h3 className="text-sm font-semibold">Settings</h3>
+                                </div>
 
                                 {/* Display Order */}
                                 <form.Field name="displayOrder">
@@ -221,25 +228,61 @@ export default function SubcategoryNewForm({ categoryId, categoryName }: Subcate
                                     }}
                                 </form.Field>
 
+                                {/* Button Label */}
+                                <form.Field name="buttonLabel">
+                                    {(field) => {
+                                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                                        return (
+                                            <Field data-invalid={isInvalid}>
+                                                <Label htmlFor={field.name}>Button Label</Label>
+                                                <Input
+                                                    id={field.name}
+                                                    name={field.name}
+                                                    value={field.state.value}
+                                                    onBlur={field.handleBlur}
+                                                    onChange={(e) => field.handleChange(e.target.value)}
+                                                    placeholder="e.g., Book Now, Order Here"
+                                                />
+                                                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                                            </Field>
+                                        )
+                                    }}
+                                </form.Field>
+
                                 {/* Active Status */}
                                 <form.Field name="isActive">
                                     {(field) => (
-                                        <div className="flex items-center justify-between p-3 border rounded-md">
-                                            <div className="flex items-center gap-2">
-                                                {field.state.value ? (
-                                                    <Eye className="h-4 w-4 text-green-500" />
-                                                ) : (
-                                                    <EyeOff className="h-4 w-4 text-muted-foreground" />
-                                                )}
-                                                <Label htmlFor={field.name} className="cursor-pointer">
-                                                    Active Status
-                                                </Label>
+                                        <div
+                                            className={`flex items-center justify-between p-4 rounded-lg border-2 transition-colors cursor-pointer ${field.state.value
+                                                ? 'border-green-500/50 bg-green-50 dark:bg-green-950/20'
+                                                : 'border-muted bg-muted/30'
+                                                }`}
+                                            onClick={() => field.handleChange(!field.state.value)}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className={`p-2 rounded-full ${field.state.value ? 'bg-green-500/20' : 'bg-muted'}`}>
+                                                    {field.state.value ? (
+                                                        <Eye className="h-4 w-4 text-green-600 dark:text-green-400" />
+                                                    ) : (
+                                                        <EyeOff className="h-4 w-4 text-muted-foreground" />
+                                                    )}
+                                                </div>
+                                                <div>
+                                                    <Label htmlFor={field.name} className="cursor-pointer font-medium">
+                                                        {field.state.value ? 'Active' : 'Inactive'}
+                                                    </Label>
+                                                    <p className="text-xs text-muted-foreground">
+                                                        {field.state.value ? 'Visible to customers' : 'Hidden from customers'}
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <Switch
-                                                id={field.name}
-                                                checked={field.state.value}
-                                                onCheckedChange={field.handleChange}
-                                            />
+                                            <div onClick={(e) => e.stopPropagation()}>
+                                                <Switch
+                                                    id={field.name}
+                                                    checked={field.state.value}
+                                                    onCheckedChange={field.handleChange}
+                                                />
+                                            </div>
                                         </div>
                                     )}
                                 </form.Field>
@@ -284,7 +327,7 @@ export default function SubcategoryNewForm({ categoryId, categoryName }: Subcate
                     </main>
 
                     {/* Sidebar */}
-                    <aside className="w-full lg:w-72 border-b lg:border-b-0 lg:border-l bg-muted/30 p-3 sm:p-4 lg:p-6 space-y-4 lg:space-y-6 order-1 lg:order-2">
+                    <aside className="w-full xl:w-72 border-b xl:border-b-0 xl:border-l bg-muted/30 p-3 sm:p-4 xl:p-6 space-y-4 xl:space-y-6 order-1 xl:order-2">
                         {/* Banner Image */}
                         <div className="space-y-3">
                             <Label className="text-sm font-medium">Banner Image *</Label>

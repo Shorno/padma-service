@@ -41,7 +41,8 @@ export function BannerSection({ banner }: BannerSectionProps) {
                         <Image
                             src={img.image}
                             alt={title}
-                            fill
+                            height={288}
+                            width={900}
                             className="object-cover"
                             priority
                         />

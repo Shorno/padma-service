@@ -33,7 +33,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, Layers } from "lucide-react"
 import NewCategoryDialog from "@/app/(admin)/admin/dashboard/category/_components/category/new-category-dialog"
 import { useTranslations } from "next-intl"
 import { CategoryWithSubcategories } from "./category-columns"
@@ -85,7 +85,18 @@ export default function CategoryTable<TData extends CategoryWithSubcategories, T
 
     return (
         <div className="w-full space-y-4">
-            {/* Header: Search + Add Button */}
+            {/* Header with Title */}
+            <div className="flex items-center gap-3 pb-2">
+                <div className="p-2 rounded-lg bg-primary/10">
+                    <Layers className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                    <h2 className="text-lg font-semibold">{t('title')}</h2>
+                    <p className="text-sm text-muted-foreground">{t('description')}</p>
+                </div>
+            </div>
+
+            {/* Search + Add Button */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                 <Input
                     placeholder={t('filterByName')}
@@ -99,14 +110,14 @@ export default function CategoryTable<TData extends CategoryWithSubcategories, T
             </div>
 
             {/* Desktop Table View */}
-            <div className="hidden md:block rounded-md border">
+            <div className="hidden md:block rounded-lg border shadow-sm overflow-hidden">
                 <Table>
-                    <TableHeader>
+                    <TableHeader className="bg-muted/50">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead key={header.id} className="font-semibold">
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(

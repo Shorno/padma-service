@@ -53,6 +53,7 @@ export default async function createSubcategory(
         const newSubcategory = await db.insert(subCategory).values({
             ...validData,
             header: validData.header ?? null,
+            buttonLabel: validData.buttonLabel ?? null,
             description: validData.description ?? null,
         }).returning()
 

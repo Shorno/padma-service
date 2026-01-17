@@ -21,6 +21,7 @@ export default async function EditSubcategoryPage({ params }: EditSubcategoryPag
                 id: subcategory.id,
                 name: subcategory.name,
                 header: subcategory.header,
+                buttonLabel: subcategory.buttonLabel,
                 description: subcategory.description,
                 slug: subcategory.slug,
                 categoryId: subcategory.categoryId,

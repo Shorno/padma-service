@@ -17,6 +17,7 @@ export const subCategory = pgTable("sub_category", {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 100 }).notNull(),
     header: varchar("header", { length: 255 }),
+    buttonLabel: varchar("button_label", { length: 100 }),
     description: text("description"),
     slug: varchar("slug", { length: 100 }).notNull().unique(),
     categoryId: integer("category_id")

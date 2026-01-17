@@ -10,6 +10,7 @@ export async function getSubcategoryById(id: number) {
             id: subCategory.id,
             name: subCategory.name,
             header: subCategory.header,
+            buttonLabel: subCategory.buttonLabel,
             description: subCategory.description,
             slug: subCategory.slug,
             categoryId: subCategory.categoryId,
