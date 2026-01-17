@@ -22,7 +22,10 @@ export function ServicePostsGrid({
             {services.map((service) => (
                 <Link
                     key={service.id}
-                    href={`/category/${categorySlug}/${subcategorySlug}/${service.slug}`}
+                    href={subcategorySlug
+                        ? `/category/${categorySlug}/subcategory/${subcategorySlug}/${service.slug}`
+                        : `/category/${categorySlug}/${service.slug}`
+                    }
                     className="group flex flex-col items-center"
                 >
                     {/* Fixed size image container */}

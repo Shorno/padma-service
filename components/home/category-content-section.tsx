@@ -236,7 +236,10 @@ export function CategoryContentSection({
                 {services.length > 0 && (
                     <div className="flex justify-center mt-6">
                         <Link
-                            href={`/category/${content.category.slug}/${selectedSubcategory?.slug || ''}`}
+                            href={selectedSubcategory?.slug
+                                ? `/category/${content.category.slug}/subcategory/${selectedSubcategory.slug}`
+                                : `/category/${content.category.slug}`
+                            }
                             className="px-8 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-50 transition-colors text-sm font-medium"
                         >
                             আরও দেখুন
