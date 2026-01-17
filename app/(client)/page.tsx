@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { CategoryCarousel } from "@/components/home/category-carousel";
-import { BannerSection } from "@/components/home/banner-section";
+import { HomePageWrapper } from "@/components/home/home-page-wrapper";
 import getCategories from "@/app/(admin)/admin/dashboard/category/actions/category/get-categories";
 import { getBannerWithImages } from "@/app/(admin)/admin/dashboard/banner/actions/get-banner";
 
@@ -17,9 +16,9 @@ export default async function HomePage() {
     const activeCategories = categories.filter(cat => cat.isActive);
 
     return (
-        <>
-            <CategoryCarousel categories={activeCategories} />
-            <BannerSection banner={banner} />
-        </>
-    )
+        <HomePageWrapper
+            categories={activeCategories}
+            banner={banner}
+        />
+    );
 }
