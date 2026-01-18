@@ -12,7 +12,7 @@ export default function ServicesLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="bg-white min-h-screen">
+        <div className="min-h-screen">
             {/* Header Section - Shared across all services pages */}
             <div className="container mx-auto px-4 py-6 text-center">
                 <h1 className="text-lg font-semibold text-gray-900 mb-2">
