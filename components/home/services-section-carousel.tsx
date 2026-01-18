@@ -44,18 +44,18 @@ export function ServicesSectionCarousel({
                     }}
                     className="w-full"
                 >
-                    <CarouselContent className="-ml-2 px-4">
+                    <CarouselContent className="ml-0 gap-[15px]">
                         {items.map((item) => (
                             <CarouselItem
                                 key={item.id}
-                                className="pl-2 basis-[28%]"
+                                className="pl-0 basis-auto"
                             >
                                 <Link
                                     href={`/category/${categorySlug}/subcategory/${subcategorySlug}/${item.service.slug}`}
-                                    className="group flex flex-col items-center"
+                                    className="group flex flex-col items-start w-[86px]"
                                 >
-                                    {/* Image container - smaller for mobile */}
-                                    <div className="relative w-full aspect-square overflow-hidden bg-white rounded-lg">
+                                    {/* Image container - 86x85 for mobile */}
+                                    <div className="relative w-[86px] h-[85px] overflow-hidden bg-white rounded-[10px]">
                                         <Image
                                             src={item.service.image}
                                             alt={item.service.name}
@@ -63,8 +63,8 @@ export function ServicesSectionCarousel({
                                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                                         />
                                     </div>
-                                    {/* Service name - smaller text for mobile */}
-                                    <h3 className="mt-1.5 text-[11px] font-medium text-gray-900 text-center group-hover:text-primary transition-colors line-clamp-2 w-full">
+                                    {/* Service name - 12px font, 600 weight, 11px gap */}
+                                    <h3 className="mt-[11px] text-[12px] leading-[15px] font-semibold text-black text-left group-hover:text-primary transition-colors line-clamp-1 w-full">
                                         {item.service.name}
                                     </h3>
                                 </Link>
@@ -85,7 +85,7 @@ export function ServicesSectionCarousel({
             </div>
 
             {/* Desktop/Tablet: Embla Carousel - matches service-posts-grid sizing */}
-            <div className="hidden md:block container mx-auto px-6">
+            <div className="hidden md:block  ">
                 <Carousel
                     opts={{
                         align: "start",
@@ -93,18 +93,18 @@ export function ServicesSectionCarousel({
                     }}
                     className="w-full"
                 >
-                    <CarouselContent className="-ml-4">
+                    <CarouselContent className="ml-0 gap-[18px] lg:gap-[26px] justify-between">
                         {items.map((item) => (
                             <CarouselItem
                                 key={item.id}
-                                className="pl-4 basis-1/4"
+                                className="pl-0 basis-auto"
                             >
                                 <Link
                                     href={`/category/${categorySlug}/subcategory/${subcategorySlug}/${item.service.slug}`}
-                                    className="group flex flex-col items-center"
+                                    className="group flex flex-col items-start w-[156px] lg:w-[215px]"
                                 >
-                                    {/* Image container - same as service-posts-grid */}
-                                    <div className="relative w-full h-24 lg:h-44 overflow-hidden bg-white rounded-lg">
+                                    {/* Image container - 156x85 tablet, 215x117 desktop */}
+                                    <div className="relative w-[156px] lg:w-[215px] h-[85px] lg:h-[117px] overflow-hidden bg-white rounded-lg">
                                         <Image
                                             src={item.service.image}
                                             alt={item.service.name}
@@ -112,8 +112,8 @@ export function ServicesSectionCarousel({
                                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                                         />
                                     </div>
-                                    {/* Service name - same as service-posts-grid */}
-                                    <h3 className="mt-2 text-sm font-medium text-gray-900 text-center group-hover:text-primary transition-colors line-clamp-2 max-w-full">
+                                    {/* Service name - 18px font, 400 weight, 12px gap */}
+                                    <h3 className="mt-3 text-[18px] leading-[22px] font-normal text-[#201616] text-left group-hover:text-primary transition-colors line-clamp-1 w-full">
                                         {item.service.name}
                                     </h3>
                                 </Link>
@@ -122,11 +122,11 @@ export function ServicesSectionCarousel({
                     </CarouselContent>
                     <CarouselPrevious
                         variant="outline"
-                        className="-left-4 h-9 w-9 rounded-full bg-white shadow-md border"
+                        className="hidden"
                     />
                     <CarouselNext
                         variant="outline"
-                        className="-right-4 h-9 w-9 rounded-full bg-white shadow-md border"
+                        className="absolute -right-[22px] top-[50px] h-[35px] w-[35px] rounded-full bg-white shadow-[0px_4px_4px_rgba(0,0,0,0.25)] border border-black/10"
                     />
                 </Carousel>
             </div>

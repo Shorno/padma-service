@@ -28,7 +28,7 @@ export default function Navbar() {
         <nav className="flex flex-col">
             {/* Main navbar content */}
             <div className="bg-navbar-primary pt-3 pb-0 min-h-30">
-                <div className="container mx-auto px-2 sm:px-4 lg:px-8">
+                <div className="content-container mx-auto">
                     <div className="flex items-center justify-between gap-2 sm:gap-4">
                         {/* Left Section: Logo and Contact */}
                         <div className="flex flex-col items-start flex-shrink min-w-0">
@@ -77,11 +77,11 @@ export default function Navbar() {
                                 {/* Mobile All Services Button - Same height as call button */}
                                 <Button
                                     asChild
-                                    className="md:hidden bg-navbar-deep hover:bg-navbar-deep/90 text-navbar-light font-semibold px-3 h-8 text-sm whitespace-nowrap"
+                                    className="md:hidden bg-navbar-deep hover:bg-navbar-deep/90 text-xs  text-navbar-light font-semibold px-3 h-8  whitespace-nowrap"
                                     style={{ borderRadius: 'var(--navbar-radius-md)' }}
                                 >
                                     <Link href="/services">
-                                        সকল সার্ভিস
+                                        সকল <br/> সার্ভিস
                                     </Link>
                                 </Button>
                             </div>

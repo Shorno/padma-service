@@ -10,7 +10,7 @@ export function SiteFooter() {
             <div className="w-full border border-nav-link-primary" />
 
             {/* Main footer content */}
-            <div className="container mx-auto px-4 md:px-4 py-6">
+            <div className="content-container mx-auto py-6">
                 <div className="flex flex-col md:flex-row gap-8 md:gap-2">
                     {/* Column 1: Download App Section - Last on mobile, first on desktop */}
                     <div className="flex flex-col gap-5 md:w-1/3 order-last md:order-first">
