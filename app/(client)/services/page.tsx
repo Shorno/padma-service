@@ -15,7 +15,7 @@ export default async function ServicesPage() {
                     {activeCategories.map((category) => (
                         <Link
                             key={category.id}
-                            href={`/${category.slug}`}
+                            href={`/services/${category.slug}`}
                             className="flex flex-col items-center gap-2 group"
                         >
                             <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full overflow-hidden border border-gray-200 group-hover:border-primary transition-colors">

@@ -1,9 +1,10 @@
-import Link from "next/link";
+import { SubcategoryLink } from "@/components/shared/subcategory-link";
 import { notFound } from "next/navigation";
 import { db } from "@/db/config";
 import { eq, and } from "drizzle-orm";
 import { category, subCategory } from "@/db/schema/category";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 // Generate static params for all categories
 export async function generateStaticParams() {
@@ -50,13 +51,14 @@ export default async function CategorySubcategoriesPage({ params }: CategorySubc
             <div className="container mx-auto px-4 py-6">
                 <div className="flex flex-wrap justify-center gap-3 md:gap-4">
                     {subcategories.map((sub) => (
-                        <Link
+                        <SubcategoryLink
                             key={sub.id}
-                            href={`/category/${categorySlug}/subcategory/${sub.slug}`}
+                            categorySlug={categorySlug}
+                            subcategorySlug={sub.slug}
                             className="px-4 py-2 border border-gray-300 rounded-full text-sm text-gray-700 hover:border-primary hover:text-primary transition-colors"
                         >
                             {sub.name}
-                        </Link>
+                        </SubcategoryLink>
                     ))}
                 </div>
             </div>
