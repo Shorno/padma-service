@@ -76,10 +76,13 @@ export default function Navbar() {
 
                                 {/* Mobile All Services Button - Same height as call button */}
                                 <Button
+                                    asChild
                                     className="md:hidden bg-navbar-deep hover:bg-navbar-deep/90 text-navbar-light font-semibold px-3 h-8 text-sm whitespace-nowrap"
                                     style={{ borderRadius: 'var(--navbar-radius-md)' }}
                                 >
-                                    সকল সার্ভিস
+                                    <Link href="/services">
+                                        সকল সার্ভিস
+                                    </Link>
                                 </Button>
                             </div>
 
@@ -112,13 +115,16 @@ export default function Navbar() {
                                 </Button>
                             </div>
                             <Button
+                                asChild
                                 className="bg-navbar-deep hover:bg-navbar-deep/90 text-navbar-light font-semibold px-4 h-9 whitespace-nowrap"
                                 style={{
                                     borderRadius: 'var(--navbar-radius-md)',
                                     fontSize: 'var(--navbar-font-link)'
                                 }}
                             >
-                                সকল সার্ভিস
+                                <Link href="/services">
+                                    সকল সার্ভিস
+                                </Link>
                             </Button>
                         </div>
 
