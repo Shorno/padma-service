@@ -17,16 +17,16 @@ const statistics = [
 
 export function ServiceStatistics() {
     return (
-        <div className="flex flex-row flex-wrap items-start gap-8 lg:gap-16">
+        <div className="flex flex-row items-start justify-between md:justify-start gap-4 sm:gap-8 lg:gap-16">
             {statistics.map((stat, index) => (
                 <div
                     key={index}
-                    className="flex flex-col gap-1"
+                    className="flex flex-col gap-0.5 sm:gap-1"
                 >
-                    <span className="text-xl lg:text-[25px] font-semibold text-service-benefits-text">
+                    <span className="text-base sm:text-xl lg:text-[25px] font-semibold text-service-benefits-text">
                         {stat.count}
                     </span>
-                    <span className="text-base lg:text-xl text-service-benefits-text font-normal">
+                    <span className="text-xs sm:text-base lg:text-xl text-service-benefits-text font-normal">
                         {stat.label}
                     </span>
                 </div>

@@ -13,7 +13,6 @@ export default function HomePage() {
     return (
         <>
             {/* Future homepage sections will be added here */}
-            {/* Example: Featured services, testimonials, etc. */}
         </>
     );
 }

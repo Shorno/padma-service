@@ -2,6 +2,7 @@ import { BannerSection } from "@/components/home/banner-section";
 import { getBannerWithImages } from "@/app/(admin)/admin/dashboard/banner/actions/get-banner";
 import {BookingSection} from "@/components/shared/booking-section";
 import {ServiceBenefitsSection} from "@/components/home/service-benefits-section";
+import {TestimonialCarousel} from "@/components/home/testimonial-carousel";
 
 /**
  * Root page for @categoryContent slot (at `/`).
@@ -20,6 +21,8 @@ export default async function CategoryContentRootPage() {
             <BannerSection banner={banner} />
             <BookingSection/>
             <ServiceBenefitsSection />
+            <TestimonialCarousel/>
+            <BookingSection/>
 
         </div>
     );
