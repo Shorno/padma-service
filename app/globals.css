@@ -264,4 +264,13 @@
     .custom-container {
         @apply container mx-auto px-4 md:px-0
     }
+    
+    /* Hide scrollbar for carousel elements */
+    .scrollbar-hide {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;  /* Chrome, Safari and Opera */
+    }
 }

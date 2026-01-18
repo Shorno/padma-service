@@ -6,13 +6,10 @@ export const metadata: Metadata = {
 };
 
 /**
- * Homepage - future sections will be added here.
+ * Homepage - displays curated service collections.
  * The category content (banner or category content) comes from the @categoryContent slot.
  */
 export default function HomePage() {
-    return (
-        <>
-            {/* Future homepage sections will be added here */}
-        </>
-    );
+    return null
 }
+
