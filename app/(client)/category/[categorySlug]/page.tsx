@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { db } from "@/db/config";
 import { eq } from "drizzle-orm";
 import { category, subCategory } from "@/db/schema/category";
-import { service } from "@/db/schema/service";
 import Link from "next/link";
 import Image from "next/image";
 
