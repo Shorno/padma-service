@@ -96,6 +96,12 @@
     --booking-tagline: #007256;
 
     --service-back-button-label: #403D3D;
+
+    /* Service Benefits Section */
+    --service-benefits-bg: #F4F5F8;
+    --service-benefits-card-bg: #FFFFFF;
+    --service-benefits-icon: #E93A85;
+    --service-benefits-text: #000000;
 }
 
 .dark {
@@ -151,6 +157,12 @@
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 
     --color-deep-red: oklch(0.501 0.196 4.725);
+
+    /* Service Benefits Section Colors for Tailwind */
+    --color-service-benefits-bg: var(--service-benefits-bg);
+    --color-service-benefits-card-bg: var(--service-benefits-card-bg);
+    --color-service-benefits-icon: var(--service-benefits-icon);
+    --color-service-benefits-text: var(--service-benefits-text);
 
 }
 
@@ -225,6 +237,12 @@
 
 
     --color-service-back-button-label: var(--service-back-button-label);
+
+    /* Service Benefits Section Colors for Tailwind */
+    --color-service-benefits-bg: var(--service-benefits-bg);
+    --color-service-benefits-card-bg: var(--service-benefits-card-bg);
+    --color-service-benefits-icon: var(--service-benefits-icon);
+    --color-service-benefits-text: var(--service-benefits-text);
 }
 
 @layer base {

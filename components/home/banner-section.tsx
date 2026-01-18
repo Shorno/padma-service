@@ -33,7 +33,7 @@ export function BannerSection({ banner }: BannerSectionProps) {
         const img = images[0];
         const content = (
             <section className="bg-white">
-                <div className="container mx-auto px-4 md:px-6">
+                <div>
                     <h2 className="text-center text-lg md:text-xl font-semibold text-black my-4 md:my-8">
                         {title}
                     </h2>
@@ -64,8 +64,8 @@ export function BannerSection({ banner }: BannerSectionProps) {
 
     // Multiple images - carousel
     return (
-        <section className="bg-white">
-            <div className="container mx-auto px-4 md:px-6">
+        <section className="bg-white container mx-auto px-4 md:px-6">
+            <div>
                 <h2 className="text-center text-lg md:text-xl font-semibold text-black my-4 md:my-8">
                     {title}
                 </h2>
