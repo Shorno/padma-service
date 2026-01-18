@@ -7,7 +7,7 @@ import { ServiceStatistics } from "./service-statistics";
 export function ServiceBenefitsSection() {
     return (
         <section className="w-full bg-service-benefits-bg py-8 lg:py-12">
-            <div className="container mx-auto px-4 md:px-6">
+            <div className="content-container">
                 {/* Content Row: Features Grid + Team Image side by side */}
                 <div className="flex flex-col md:flex-row justify-between items-start gap-8 md:gap-6 lg:gap-10">
                     {/* Left Column - Service Features */}

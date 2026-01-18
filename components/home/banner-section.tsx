@@ -34,10 +34,10 @@ export function BannerSection({ banner }: BannerSectionProps) {
         const content = (
             <section className="bg-white">
                 <div>
-                    <h2 className="text-center text-lg md:text-xl font-semibold text-black my-4 md:my-8">
+                    <h2 className="text-center text-lg md:text-xl font-semibold text-black my-4 md:my-6">
                         {title}
                     </h2>
-                    <div className="relative w-full h-40 sm:h-52 md:h-64 lg:h-72 overflow-hidden rounded-lg">
+                    <div className="relative w-full h-[112px] md:h-[105px] overflow-hidden rounded-lg">
                         <Image
                             src={img.image}
                             alt={title}
@@ -64,9 +64,9 @@ export function BannerSection({ banner }: BannerSectionProps) {
 
     // Multiple images - carousel
     return (
-        <section className="bg-white container mx-auto px-4 md:px-6">
+        <section className="bg-white content-container p-0">
             <div>
-                <h2 className="text-center text-lg md:text-xl font-semibold text-black my-4 md:my-8">
+                <h2 className="text-center text-lg md:text-xl font-semibold text-black my-4 md:my-6">
                     {title}
                 </h2>
                 <Carousel
@@ -84,7 +84,7 @@ export function BannerSection({ banner }: BannerSectionProps) {
                             <CarouselItem key={img.id} className="basis-full">
                                 {img.link ? (
                                     <Link href={img.link} className="block hover:opacity-95 transition-opacity">
-                                        <div className="relative w-full h-40 sm:h-52 md:h-64 lg:h-72 overflow-hidden rounded-lg">
+                                        <div className="relative w-full h-[112px] md:h-[105px] lg:h-[105px] overflow-hidden rounded-lg">
                                             <Image
                                                 src={img.image}
                                                 alt={title}
@@ -95,7 +95,7 @@ export function BannerSection({ banner }: BannerSectionProps) {
                                         </div>
                                     </Link>
                                 ) : (
-                                    <div className="relative w-full h-40 sm:h-52 md:h-64 lg:h-72 overflow-hidden rounded-lg">
+                                    <div className="relative w-full h-[112px] md:h-[105px] lg:h-[105px] overflow-hidden rounded-lg">
                                         <Image
                                             src={img.image}
                                             alt={title}

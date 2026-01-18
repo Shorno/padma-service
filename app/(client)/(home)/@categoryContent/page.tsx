@@ -18,14 +18,19 @@ export default async function CategoryContentRootPage() {
     const banner = await getBannerWithImages();
 
     return (
-        <div>
-            <BannerSection banner={banner} />
-            <HomepageSectionsGrid />
-            <BookingSection/>
+        <>
+            <div className={"content-container"}>
+                <BannerSection banner={banner} />
+                <HomepageSectionsGrid />
+                <BookingSection/>
+            </div>
             <ServiceBenefitsSection />
-            <TestimonialCarousel/>
-            <BookingSection/>
 
-        </div>
+            <div>
+                <TestimonialCarousel/>
+
+                <BookingSection/>
+            </div>
+        </>
     );
 }

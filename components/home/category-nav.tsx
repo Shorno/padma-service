@@ -33,7 +33,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
     return (
         <section className="py-2 bg-white">
             {/* Mobile Layout: 2 rows x 4 columns grid carousel */}
-            <div className="sm:hidden container mx-auto px-4">
+            <div className="sm:hidden content-container mx-auto">
                 <Carousel
                     opts={{
                         align: "start",
@@ -47,7 +47,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
                                 key={groupIndex}
                                 className="pl-0 basis-full"
                             >
-                                <div className="grid grid-cols-4 gap-y-3">
+                                <div className="grid grid-cols-4 gap-x-[34px] gap-y-5 justify-items-center">
                                     {group.map((category) => {
                                         const isSelected = activeSegment === category.slug;
                                         // Toggle: clicking selected category goes home, otherwise go to category
@@ -59,13 +59,13 @@ export function CategoryNav({ categories }: CategoryNavProps) {
                                                 href={href}
                                                 prefetch={true}
                                                 className={cn(
-                                                    "flex flex-col items-center gap-1 group",
-                                                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg p-1"
+                                                    "flex flex-col items-center gap-[6px] group w-[50px] h-[71px]",
+                                                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
                                                 )}
                                             >
                                                 <div
                                                     className={cn(
-                                                        "relative w-14 h-14 overflow-hidden transition-all",
+                                                        "relative w-[50px] h-[50px] overflow-hidden transition-all",
                                                         isSelected
                                                             ? "ring-2 ring-primary ring-offset-1 rounded-lg"
                                                             : "group-hover:opacity-80"
@@ -80,10 +80,10 @@ export function CategoryNav({ categories }: CategoryNavProps) {
                                                 </div>
                                                 <span
                                                     className={cn(
-                                                        "text-xs text-center transition-colors line-clamp-1 px-1",
+                                                        "text-[12px] leading-[15px] text-center transition-colors whitespace-nowrap",
                                                         isSelected
                                                             ? "text-primary font-medium"
-                                                            : "text-gray-700 group-hover:text-primary"
+                                                            : "text-black group-hover:text-primary"
                                                     )}
                                                 >
                                                     {category.name}
@@ -107,7 +107,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
             </div>
 
             {/* Desktop/Tablet Layout: Original horizontal carousel */}
-            <div className="hidden sm:block container mx-auto px-6">
+            <div className="hidden sm:block content-container">
                 <Carousel
                     opts={{
                         align: "start",
@@ -115,7 +115,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
                     }}
                     className="w-full"
                 >
-                    <CarouselContent className="-ml-4">
+                    <CarouselContent className="ml-0 gap-4 justify-between">
                         {categories.map((category) => {
                             const isSelected = activeSegment === category.slug;
                             const href = isSelected ? "/" : `/${category.slug}`;
@@ -123,19 +123,19 @@ export function CategoryNav({ categories }: CategoryNavProps) {
                             return (
                                 <CarouselItem
                                     key={category.id}
-                                    className="pl-4 basis-1/5 md:basis-1/6 lg:basis-1/8"
+                                    className="pl-0 basis-auto"
                                 >
                                     <Link
                                         href={href}
                                         prefetch={true}
                                         className={cn(
-                                            "flex flex-col items-center gap-2 group w-full",
-                                            "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg p-1"
+                                            "flex flex-col items-center gap-[8px] lg:gap-[15px] group w-[100px] h-[80px] lg:h-[85px]",
+                                            "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
                                         )}
                                     >
                                         <div
                                             className={cn(
-                                                "relative w-20 h-20 md:w-24 md:h-20 lg:w-20 lg:h-20 overflow-hidden transition-all",
+                                                "relative w-[50px] h-[50px] overflow-hidden transition-all",
                                                 isSelected
                                                     ? "ring-2 ring-primary ring-offset-2 rounded-lg"
                                                     : "group-hover:opacity-80"
@@ -150,10 +150,10 @@ export function CategoryNav({ categories }: CategoryNavProps) {
                                         </div>
                                         <span
                                             className={cn(
-                                                "text-sm text-center transition-colors line-clamp-2",
+                                                "text-[16px] leading-[19px] text-center transition-colors whitespace-nowrap",
                                                 isSelected
                                                     ? "text-primary font-medium"
-                                                    : "text-gray-700 group-hover:text-primary"
+                                                    : "text-black group-hover:text-primary"
                                             )}
                                         >
                                             {category.name}

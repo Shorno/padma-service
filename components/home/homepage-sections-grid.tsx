@@ -29,20 +29,21 @@ function HomepageSection({ section }: HomepageSectionProps) {
     const subcategorySlug = section.subCategory.slug
 
     return (
-        <section className="space-y-3 md:space-y-4">
+        <section className="space-y-[10px] md:space-y-[10px]">
             {/* Section Header with line between title and link */}
-            <div className="flex items-center gap-2 md:gap-4 container mx-auto px-4 md:px-6">
-                <h2 className="text-sm md:text-xl font-semibold text-gray-900 shrink-0">
+            <div className="flex items-center gap-2 md:gap-4 pr-[10px] md:pr-[10px]">
+                <h2 className="text-[15px] md:text-[18px] font-semibold md:font-bold text-[#201616] shrink-0 leading-[18px] md:leading-[22px]">
                     {title}
                 </h2>
                 {/* Horizontal line */}
-                <div className="flex-1 h-px bg-gray-200" />
+                <div className="flex-1 h-px bg-black/30" />
                 <Link
                     href={`/category/${categorySlug}/subcategory/${subcategorySlug}`}
-                    className="flex items-center gap-0.5 text-xs md:text-sm text-primary hover:text-primary/80 transition-colors font-medium shrink-0"
+                    className="flex items-center gap-1 md:gap-4 text-[15px] md:text-[18px] text-[#E93A85] hover:text-[#E93A85]/80 transition-colors font-semibold md:font-normal shrink-0 leading-[18px] md:leading-[22px]"
                 >
-                    এ ক্যাটাগরিটি দেখুন
-                    <ChevronRight className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                    <span className="hidden md:inline">এ ক্যাটাগরিটি দেখুন</span>
+                    <span className="md:hidden">আরও দেখুন</span>
+                    <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-[#E93A85]" />
                 </Link>
             </div>
 
