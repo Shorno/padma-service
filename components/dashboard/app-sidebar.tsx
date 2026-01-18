@@ -12,7 +12,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { ImageIcon, ListIcon, ShoppingBagIcon, WarehouseIcon } from "lucide-react";
+import { ImageIcon, LayoutGridIcon, ListIcon, ShoppingBagIcon, WarehouseIcon } from "lucide-react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import { authClient } from "@/lib/auth-client";
@@ -39,6 +39,11 @@ const navLinks = {
             title: "Banner",
             url: "/admin/dashboard/banner",
             icon: ImageIcon,
+        },
+        {
+            title: "Homepage Sections",
+            url: "/admin/dashboard/homepage-sections",
+            icon: LayoutGridIcon,
         },
     ],
 
