@@ -14,7 +14,7 @@ export default function ServicesLayout({
     return (
         <div className="min-h-screen">
             {/* Header Section - Shared across all services pages */}
-            <div className="container mx-auto px-4 py-6 text-center">
+            <div className="content-container  py-6 text-center">
                 <h1 className="text-lg font-semibold text-gray-900 mb-2">
                     সকল সার্ভিস
                 </h1>

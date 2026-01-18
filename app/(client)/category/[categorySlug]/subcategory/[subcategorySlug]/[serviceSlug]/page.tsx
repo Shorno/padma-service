@@ -51,14 +51,14 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     }
 
     return (
-        <div className="bg-white min-h-screen container mx-auto px-4 md:px-8">
+        <div className="bg-white min-h-screen content-container">
             {/* Subcategory Button */}
             {service.subCategory && (
                 <div className="flex justify-center pt-6 pb-4">
                     <Button
                         asChild
                         variant="outline"
-                        className="px-6 py-2 border-2 border-navbar-primary rounded-full text-service-back-button-label font-medium hover:bg-gray-100"
+                        className="w-[334px] md:w-[700px] lg:w-[334px] h-[35px] px-[10px] border border-primary rounded-full shadow-[0px_2px_2px_rgba(0,0,0,0.15)] text-[18px] leading-[22px] font-normal text-gray-700 hover:bg-gray-50"
                     >
                         <Link href={`/category/${categorySlug}/subcategory/${subcategorySlug}`}>
                             {service.subCategory.buttonLabel || service.subCategory.name}

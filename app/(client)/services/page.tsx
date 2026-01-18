@@ -10,23 +10,23 @@ export default async function ServicesPage() {
     return (
         <>
             {/* Categories Grid */}
-            <div className="container mx-auto px-4 py-6">
-                <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-9 gap-4 md:gap-6">
+            <div className="content-container py-6">
+                <div className="flex flex-row justify-center items-center gap-[35px] md:gap-[16px] lg:gap-[16px] flex-wrap">
                     {activeCategories.map((category) => (
                         <Link
                             key={category.id}
                             href={`/services/${category.slug}`}
-                            className="flex flex-col items-center gap-2 group"
+                            className="flex flex-col justify-center items-center gap-[6px] md:gap-[8px] lg:gap-[15px] w-[50px] md:w-[100px] lg:w-[100px] h-[65px] md:h-[80px] lg:h-[85px] group"
                         >
-                            <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full overflow-hidden border border-gray-200 group-hover:border-primary transition-colors">
+                            <div className="relative w-[50px] h-[50px] rounded-full overflow-hidden group-hover:opacity-80 transition-opacity">
                                 <Image
                                     src={category.logo || category.image}
                                     alt={category.name}
                                     fill
-                                    className="object-contain p-1"
+                                    className="object-contain"
                                 />
                             </div>
-                            <span className="text-xs sm:text-sm text-center text-gray-700 group-hover:text-primary transition-colors line-clamp-2">
+                            <span className="text-[12px] leading-[15px] md:text-[16px] md:leading-[19px] font-normal text-black text-center group-hover:text-primary transition-colors whitespace-nowrap md:line-clamp-1 w-full">
                                 {category.name}
                             </span>
                         </Link>
