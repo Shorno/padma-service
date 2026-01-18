@@ -34,7 +34,7 @@ export function ServicesSectionCarousel({
 }: ServicesSectionCarouselProps) {
     return (
         <>
-            {/* Mobile: Embla Carousel - 3 items visible */}
+            {/* Mobile: Embla Carousel - matches service-posts-grid sizing */}
             <div className="md:hidden">
                 <Carousel
                     opts={{
@@ -48,13 +48,13 @@ export function ServicesSectionCarousel({
                         {items.map((item) => (
                             <CarouselItem
                                 key={item.id}
-                                className="pl-2 basis-[30%]"
+                                className="pl-2 basis-[28%]"
                             >
                                 <Link
                                     href={`/category/${categorySlug}/subcategory/${subcategorySlug}/${item.service.slug}`}
                                     className="group flex flex-col items-center"
                                 >
-                                    {/* Image container */}
+                                    {/* Image container - smaller for mobile */}
                                     <div className="relative w-full aspect-square overflow-hidden bg-white rounded-lg">
                                         <Image
                                             src={item.service.image}
@@ -63,7 +63,7 @@ export function ServicesSectionCarousel({
                                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                                         />
                                     </div>
-                                    {/* Service name */}
+                                    {/* Service name - smaller text for mobile */}
                                     <h3 className="mt-1.5 text-[11px] font-medium text-gray-900 text-center group-hover:text-primary transition-colors line-clamp-2 w-full">
                                         {item.service.name}
                                     </h3>
@@ -84,7 +84,7 @@ export function ServicesSectionCarousel({
                 </Carousel>
             </div>
 
-            {/* Desktop/Tablet: Embla Carousel with arrows */}
+            {/* Desktop/Tablet: Embla Carousel - matches service-posts-grid sizing */}
             <div className="hidden md:block container mx-auto px-6">
                 <Carousel
                     opts={{
@@ -97,14 +97,14 @@ export function ServicesSectionCarousel({
                         {items.map((item) => (
                             <CarouselItem
                                 key={item.id}
-                                className="pl-4 basis-1/4 lg:basis-1/5"
+                                className="pl-4 basis-1/4"
                             >
                                 <Link
                                     href={`/category/${categorySlug}/subcategory/${subcategorySlug}/${item.service.slug}`}
                                     className="group flex flex-col items-center"
                                 >
-                                    {/* Image container */}
-                                    <div className="relative w-full h-32 lg:h-44 overflow-hidden bg-white rounded-lg">
+                                    {/* Image container - same as service-posts-grid */}
+                                    <div className="relative w-full h-24 lg:h-44 overflow-hidden bg-white rounded-lg">
                                         <Image
                                             src={item.service.image}
                                             alt={item.service.name}
@@ -112,7 +112,7 @@ export function ServicesSectionCarousel({
                                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                                         />
                                     </div>
-                                    {/* Service name */}
+                                    {/* Service name - same as service-posts-grid */}
                                     <h3 className="mt-2 text-sm font-medium text-gray-900 text-center group-hover:text-primary transition-colors line-clamp-2 max-w-full">
                                         {item.service.name}
                                     </h3>
@@ -133,4 +133,5 @@ export function ServicesSectionCarousel({
         </>
     );
 }
+
 

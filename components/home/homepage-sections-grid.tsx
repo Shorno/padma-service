@@ -32,7 +32,7 @@ function HomepageSection({ section }: HomepageSectionProps) {
         <section className="space-y-3 md:space-y-4">
             {/* Section Header with line between title and link */}
             <div className="flex items-center gap-2 md:gap-4 container mx-auto px-4 md:px-6">
-                <h2 className="text-base md:text-xl font-semibold text-gray-900 shrink-0">
+                <h2 className="text-sm md:text-xl font-semibold text-gray-900 shrink-0">
                     {title}
                 </h2>
                 {/* Horizontal line */}
