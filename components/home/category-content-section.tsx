@@ -43,7 +43,7 @@ function SideCarousel({
                     <CarouselItem key={img.id} className="basis-full">
                         {img.link ? (
                             <Link href={img.link} className="block h-full">
-                                <div className="relative w-full h-32 sm:h-36 md:h-20 lg:h-44 overflow-hidden rounded-lg">
+                                <div className="relative w-full h-[90px] md:h-[77px] lg:h-[130px] overflow-hidden rounded-lg">
                                     <Image
                                         src={img.image}
                                         alt="Banner"
@@ -53,7 +53,7 @@ function SideCarousel({
                                 </div>
                             </Link>
                         ) : (
-                            <div className="relative w-full h-32 sm:h-36 md:h-20 lg:h-44 overflow-hidden rounded-lg">
+                            <div className="relative w-full h-[90px] md:h-[77px] lg:h-[130px] overflow-hidden rounded-lg">
                                 <Image
                                     src={img.image}
                                     alt="Banner"
@@ -93,7 +93,7 @@ export function CategoryContentSection({
     return (
         <section className="bg-white">
             {/* Three Carousels Section - Left (1/6), Middle (2/3), Right (1/6) */}
-            <div className="container mx-auto px-4 md:px-6 py-4">
+            <div className="content-container py-4">
                 <div className="flex flex-col md:flex-row gap-4 items-stretch">
                     {/* Left Carousel - 1/4 width on desktop */}
                     <div className="hidden md:block md:w-1/4">
@@ -126,7 +126,7 @@ export function CategoryContentSection({
                                         <CarouselItem key={img.id} className="basis-full">
                                             {img.link ? (
                                                 <Link href={img.link} className="block">
-                                                    <div className="relative w-full h-32 sm:h-36 md:h-20 lg:h-44 overflow-hidden rounded-lg">
+                                                    <div className="relative w-full h-[90px] md:h-[77px] lg:h-[130px] overflow-hidden rounded-lg">
                                                         <Image
                                                             src={img.image}
                                                             alt="Banner"
@@ -136,7 +136,7 @@ export function CategoryContentSection({
                                                     </div>
                                                 </Link>
                                             ) : (
-                                                <div className="relative w-full h-32 sm:h-36 md:h-20 lg:h-44 overflow-hidden rounded-lg">
+                                                <div className="relative w-full h-[90px] md:h-[77px] lg:h-[130px] overflow-hidden rounded-lg">
                                                     <Image
                                                         src={img.image}
                                                         alt="Banner"
@@ -150,7 +150,7 @@ export function CategoryContentSection({
                                 </CarouselContent>
                             </Carousel>
                         ) : selectedSubcategory?.image ? (
-                            <div className="relative w-full h-32 sm:h-36 md:h-20 lg:h-48 overflow-hidden rounded-lg">
+                            <div className="relative w-full h-[90px] md:h-[77px] lg:h-[130px] overflow-hidden rounded-lg">
                                 <Image
                                     src={selectedSubcategory.image}
                                     alt={selectedSubcategory.name}
@@ -159,7 +159,7 @@ export function CategoryContentSection({
                                 />
                             </div>
                         ) : (
-                            <div className="w-full h-32 sm:h-36 md:h-40 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <div className="w-full h-[90px] md:h-[77px] lg:h-[130px] bg-gray-100 rounded-lg flex items-center justify-center">
                                 <p className="text-gray-400">No banner image</p>
                             </div>
                         )}
@@ -185,7 +185,7 @@ export function CategoryContentSection({
                 {/* Header Section - Below Carousels */}
                 {selectedSubcategory?.header && (
                     <div className="text-center mt-6 mx-auto md:max-w-sm lg:max-w-none">
-                        <h2 className="text-base md:text-sm lg:text-2xl font-semibold text-gray-900">
+                        <h2 className="text-sm md:text-base  lg:text-xl font-semibold text-gray-900">
                             {selectedSubcategory.header}
                         </h2>
                     </div>
@@ -210,7 +210,7 @@ export function CategoryContentSection({
             </div>
 
             {/* Service Posts Grid */}
-            <div className="container mx-auto py-4 px-4 md:px-6">
+            <div className="content-container py-4">
                 {isLoading ? (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                         {Array.from({ length: 8 }).map((_, i) => (
@@ -248,7 +248,7 @@ export function CategoryContentSection({
                 )}
             </div>
 
-            <div className="container mx-auto px-4 md:px-6 py-6 border-t border-gray-200 mt-4">
+            <div className="content-container py-6 border-t border-gray-200 mt-4">
                 <div className="flex flex-col items-center gap-2">
                     <div className="flex items-center gap-2">
                         <Image
@@ -279,7 +279,7 @@ export function CategoryContentSection({
 
             {/* Rich Text Description Section */}
             {selectedSubcategory?.description && (
-                <div className="container mx-auto px-4 md:px-6 py-6">
+                <div className="content-container py-6">
                     <div
                         className="prose prose-sm md:prose-base max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary prose-strong:text-gray-900 prose-ul:text-gray-700 prose-ol:text-gray-700"
                         dangerouslySetInnerHTML={{ __html: selectedSubcategory.description }}

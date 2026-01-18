@@ -26,9 +26,8 @@ export default async function CategoryContentRootPage() {
             </div>
             <ServiceBenefitsSection />
 
-            <div>
+            <div className={"content-container"}>
                 <TestimonialCarousel/>
-
                 <BookingSection/>
             </div>
         </>

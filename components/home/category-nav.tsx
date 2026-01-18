@@ -31,7 +31,7 @@ export function CategoryNav({ categories }: CategoryNavProps) {
     }
 
     return (
-        <section className="py-2 bg-white">
+        <section className="py-2 bg-white ">
             {/* Mobile Layout: 2 rows x 4 columns grid carousel */}
             <div className="sm:hidden content-container mx-auto">
                 <Carousel
@@ -129,13 +129,13 @@ export function CategoryNav({ categories }: CategoryNavProps) {
                                         href={href}
                                         prefetch={true}
                                         className={cn(
-                                            "flex flex-col items-center gap-[8px] lg:gap-[15px] group w-[100px] h-[80px] lg:h-[85px]",
+                                            "flex mt-1 flex-col items-center gap-[8px] lg:gap-[15px] group w-[100px] h-[80px] lg:h-[85px]",
                                             "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
                                         )}
                                     >
                                         <div
                                             className={cn(
-                                                "relative w-[50px] h-[50px] overflow-hidden transition-all",
+                                                "relative  w-[50px] h-[50px] overflow-hidden transition-all",
                                                 isSelected
                                                     ? "ring-2 ring-primary ring-offset-2 rounded-lg"
                                                     : "group-hover:opacity-80"
