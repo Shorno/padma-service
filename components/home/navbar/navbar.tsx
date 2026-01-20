@@ -1,6 +1,6 @@
 "use client";
 
-import {Home, Menu, Search} from "lucide-react";
+import { Home, Menu, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -27,8 +27,14 @@ export default function Navbar() {
     return (
         <nav className="flex flex-col sticky top-0 z-50">
             {/* Main navbar content */}
-            <div className="bg-navbar-primary pt-2 pb-0 min-h-[123px] md:min-h-30">
-                <div className="content-container mx-auto">
+            <div className="bg-navbar-primary pt-2 pb-0 min-h-[123px] md:min-h-30 relative">
+                {/* Mobile Background Image - stops before curved section */}
+                <div
+                    className="absolute inset-x-0 top-0 bottom-[20px] md:hidden bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: "url('/images/nav-bg.png')" }}
+                />
+
+                <div className="content-container mx-auto relative z-10">
                     {/* Mobile Layout (< md) */}
                     <div className="flex md:hidden items-start justify-between pt-2">
                         {/* Left Section: Logo, Phone, Tagline */}
@@ -94,10 +100,10 @@ export default function Navbar() {
                             <Button
                                 asChild
                                 className="flex items-center justify-center bg-[rgba(210,12,109,0.6)] hover:bg-[rgba(210,12,109,0.7)] text-navbar-light font-semibold
-                                w-12 h-[30px] p-0"
+                                w-12 h-8 p-0"
                                 style={{
                                     borderRadius: '4px',
-                                    fontSize: '12px',
+                                    fontSize: '13px',
                                     lineHeight: '16px',
                                 }}
                             >
@@ -110,7 +116,7 @@ export default function Navbar() {
                             <Button
                                 size="icon"
                                 variant="ghost"
-                                className="bg-white/80 size-[30px] hover:bg-white/90 rounded"
+                                className="bg-white/80 size-[32px] hover:bg-white/90 rounded"
                             >
                                 <Search className="text-[#999085]" />
                             </Button>
@@ -120,21 +126,13 @@ export default function Navbar() {
                                 href="/"
                                 className="flex items-center justify-center w-[32px] h-[32px] text-white/80 hover:text-white transition-colors"
                             >
-                                <Home strokeWidth={2} size={30} />
+                                <Home strokeWidth={2} size={32} />
                             </Link>
 
                             {/* Menu Icon (Hamburger) */}
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    {/*<Button*/}
-                                    {/*    variant="ghost"*/}
-                                    {/*    className="flex flex-col justify-center items-center gap-[4px] w-[28px] h-[27px] p-0 hover:bg-transparent"*/}
-                                    {/*>*/}
-                                    {/*    <span className="w-[22px] h-0 border-2 border-white rounded" />*/}
-                                    {/*    <span className="w-[22px] h-0 border-2 border-white rounded" />*/}
-                                    {/*    <span className="w-[22px] h-0 border-2 border-white rounded" />*/}
-                                    {/*</Button>*/}
-                                    <Menu className={"text-white"} size={30}/>
+                                    <Menu className={"text-white"} size={32} />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent
                                     align="end"
