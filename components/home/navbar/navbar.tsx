@@ -25,7 +25,7 @@ export default function Navbar() {
     ];
 
     return (
-        <nav className="flex flex-col">
+        <nav className="flex flex-col sticky top-0 z-50">
             {/* Main navbar content */}
             <div className="bg-navbar-primary pt-2 pb-0 min-h-[123px] md:min-h-30">
                 <div className="content-container mx-auto">
