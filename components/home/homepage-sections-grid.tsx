@@ -47,12 +47,14 @@ function HomepageSection({ section }: HomepageSectionProps) {
                 </Link>
             </div>
 
-            {/* Services Carousel/Grid */}
-            <ServicesSectionCarousel
-                items={section.items}
-                categorySlug={categorySlug}
-                subcategorySlug={subcategorySlug}
-            />
+            {/* Services Carousel/Grid - extends to right edge on mobile */}
+            <div className="-mr-4 md:mr-0">
+                <ServicesSectionCarousel
+                    items={section.items}
+                    categorySlug={categorySlug}
+                    subcategorySlug={subcategorySlug}
+                />
+            </div>
         </section>
     )
 }

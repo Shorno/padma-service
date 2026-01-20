@@ -25,11 +25,137 @@ export default function Navbar() {
     ];
 
     return (
-        <nav className="flex flex-col">
+        <nav className="flex flex-col sticky top-0 z-50">
             {/* Main navbar content */}
-            <div className="bg-navbar-primary pt-3 pb-0 min-h-30">
+            <div className="bg-navbar-primary pt-2 pb-0 min-h-[123px] md:min-h-30">
                 <div className="content-container mx-auto">
-                    <div className="flex items-center justify-between gap-2 sm:gap-4">
+                    {/* Mobile Layout (< md) */}
+                    <div className="flex md:hidden items-start justify-between pt-2">
+                        {/* Left Section: Logo, Phone, Tagline */}
+                        <div className="flex flex-col items-start gap-1.5">
+                            {/* Logo Row with brand name */}
+                            <div className="flex flex-col gap-1.5">
+                                <Link className="flex items-center gap-[5px]" href={"/"}>
+                                    <Image
+                                        src="/logos/call-icon.svg"
+                                        alt="পদ্মা সার্ভিস"
+                                        width={33}
+                                        height={33}
+                                        className="rounded-full border border-navbar-light"
+                                    />
+                                    <span className="text-navbar-light font-bold text-lg leading-[22px]">
+                                        পদ্মা সার্ভিস
+                                    </span>
+                                </Link>
+
+                                {/* Phone Number Tag */}
+                                <div
+                                    className="flex items-center justify-center bg-navbar-light border border-navbar-border px-2.5 h-[30px] w-[137px] gap-[3px]"
+                                    style={{ borderRadius: '6px' }}
+                                >
+                                    <span
+                                        className="flex items-center justify-center bg-[#E93A85] text-navbar-light font-semibold px-2.5 h-[23px] w-[33px]"
+                                        style={{
+                                            borderRadius: '4px',
+                                            fontSize: '13px',
+                                            lineHeight: '16px',
+                                        }}
+                                    >
+                                        ক্লিক
+                                    </span>
+                                    <a
+                                        href="tel:01755997447"
+                                        className="text-navbar-text-dark font-normal"
+                                        style={{
+                                            fontSize: '14.5px',
+                                            lineHeight: '18px',
+                                        }}
+                                    >
+                                        01755997447
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* Tagline */}
+                            <span
+                                className="text-navbar-light font-semibold"
+                                style={{
+                                    fontSize: '12px',
+                                    lineHeight: '17px',
+                                }}
+                            >
+                                এক ক্লিকে সকল সার্ভিস
+                            </span>
+                        </div>
+
+                        {/* Right Section: All Services, Search, Home, Menu */}
+                        <div className="flex items-center gap-[15px] mt-[39px]">
+                            {/* All Services Button */}
+                            <Button
+                                asChild
+                                className="flex items-center justify-center bg-[rgba(210,12,109,0.6)] hover:bg-[rgba(210,12,109,0.7)] text-navbar-light font-semibold w-[41px] h-[32px] p-0"
+                                style={{
+                                    borderRadius: '4px',
+                                    fontSize: '12px',
+                                    lineHeight: '16px',
+                                }}
+                            >
+                                <Link href="/services" className="text-center leading-tight">
+                                    সকল<br />সার্ভিস
+                                </Link>
+                            </Button>
+
+                            {/* Search Icon with background */}
+                            <Button
+                                size="icon"
+                                variant="ghost"
+                                className="w-[32px] h-[32px] bg-white/80 hover:bg-white/90 rounded"
+                            >
+                                <Search className="w-[22.86px] h-[21.94px] text-[#999085]" />
+                            </Button>
+
+                            {/* Home Icon */}
+                            <Link
+                                href="/"
+                                className="flex items-center justify-center w-[32px] h-[32px] text-white/80 hover:text-white transition-colors"
+                            >
+                                <Home className="w-[26.67px] h-[26px]" strokeWidth={2} />
+                            </Link>
+
+                            {/* Menu Icon (Hamburger) */}
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        className="flex flex-col justify-center items-center gap-[4px] w-[28px] h-[27px] p-0 hover:bg-transparent"
+                                    >
+                                        <span className="w-[22px] h-0 border-2 border-white rounded" />
+                                        <span className="w-[22px] h-0 border-2 border-white rounded" />
+                                        <span className="w-[22px] h-0 border-2 border-white rounded" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                    align="end"
+                                    sideOffset={35}
+                                    className="w-[calc(100vw-32px)] p-0 border-0 shadow-lg overflow-hidden rounded-md mx-4"
+                                >
+                                    {menuItems.map((item, index) => (
+                                        <DropdownMenuItem key={index} asChild className="p-0 focus:bg-nav-link-primary/90">
+                                            <Link
+                                                href={item.href}
+                                                className="w-full h-10 flex items-center pl-[27px] text-base font-semibold bg-nav-link-primary text-white hover:bg-nav-link-primary/90 cursor-pointer"
+                                            >
+                                                {item.label}
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
+                    </div>
+
+                    {/* Desktop Layout (>= md) */}
+                    <div className="hidden md:flex items-center justify-between gap-4">
                         {/* Left Section: Logo and Contact */}
                         <div className="flex flex-col items-start flex-shrink min-w-0">
                             {/* Logo Row */}
@@ -49,9 +175,8 @@ export default function Navbar() {
                                 </span>
                             </Link>
 
-                            {/* Phone Number Tag + Mobile All Services - Same Row */}
+                            {/* Phone Number Tag */}
                             <div className="flex items-center gap-2 mt-2">
-                                {/* Phone Number Tag */}
                                 <div
                                     className="flex items-center bg-navbar-light border border-navbar-border px-2 h-8"
                                     style={{ borderRadius: 'var(--navbar-radius-md)' }}
@@ -73,17 +198,6 @@ export default function Navbar() {
                                         01755997447
                                     </a>
                                 </div>
-
-                                {/* Mobile All Services Button - Same height as call button */}
-                                <Button
-                                    asChild
-                                    className="md:hidden bg-navbar-deep hover:bg-navbar-deep/90 text-xs  text-navbar-light font-semibold px-3 h-8  whitespace-nowrap"
-                                    style={{ borderRadius: 'var(--navbar-radius-md)' }}
-                                >
-                                    <Link href="/services">
-                                        সকল <br/> সার্ভিস
-                                    </Link>
-                                </Button>
                             </div>
 
                             {/* Tagline */}
@@ -96,7 +210,7 @@ export default function Navbar() {
                         </div>
 
                         {/* Center Section: Search */}
-                        <div className="hidden md:flex items-center gap-2 flex-1 max-w-md">
+                        <div className="flex items-center gap-2 flex-1 max-w-md">
                             <div className="relative flex-1">
                                 <Input
                                     type="text"
@@ -129,26 +243,17 @@ export default function Navbar() {
                         </div>
 
                         {/* Right Section: Home and Menu */}
-                        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-                            {/* Mobile Search Icon - near menu */}
-                            <Button
-                                size="icon"
-                                variant="ghost"
-                                className="md:hidden text-navbar-light hover:bg-navbar-light/10"
-                            >
-                                <Search className="h-7! w-7! mt-2" />
-                            </Button>
-
+                        <div className="flex items-center gap-3 flex-shrink-0">
                             <Link
                                 href="/"
-                                className="hidden md:flex text-navbar-light hover:text-navbar-light/80 transition-colors"
+                                className="text-navbar-light hover:text-navbar-light/80 transition-colors"
                             >
                                 <div className="flex flex-col items-center">
-                                    <Home className="h-6! w-6!" />
+                                    <Home className="h-6 w-6" />
                                 </div>
                             </Link>
 
-                            {/* Mobile Menu - Dropdown */}
+                            {/* Desktop Menu - Dropdown */}
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <Button
@@ -156,13 +261,13 @@ export default function Navbar() {
                                         size="icon"
                                         className="text-navbar-light hover:bg-navbar-light/10"
                                     >
-                                        <Menu className="h-7! w-7! sm:h-6! sm:w-6! mt-2 sm:mt-0" />
+                                        <Menu className="h-6 w-6" />
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent
                                     align="end"
                                     sideOffset={55}
-                                    className="w-[calc(100vw-32px)] sm:w-[486px] p-0 border-0 shadow-lg overflow-hidden rounded-md mx-4"
+                                    className="w-[486px] p-0 border-0 shadow-lg overflow-hidden rounded-md"
                                 >
                                     {menuItems.map((item, index) => (
                                         <DropdownMenuItem key={index} asChild className="p-0 focus:bg-nav-link-primary/90">
