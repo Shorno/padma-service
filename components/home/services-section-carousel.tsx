@@ -44,7 +44,7 @@ export function ServicesSectionCarousel({
                     }}
                     className="w-full"
                 >
-                    <CarouselContent className="ml-0 gap-[15px]">
+                    <CarouselContent className="ml-0 gap-[15px] pr-4">
                         {items.map((item) => (
                             <CarouselItem
                                 key={item.id}
