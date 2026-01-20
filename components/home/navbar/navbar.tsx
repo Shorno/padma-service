@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Menu, Search } from "lucide-react";
+import {Home, Menu, Search} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -80,7 +80,7 @@ export default function Navbar() {
                             <span
                                 className="text-navbar-light font-semibold"
                                 style={{
-                                    fontSize: '12px',
+                                    fontSize: '13px',
                                     lineHeight: '17px',
                                 }}
                             >
@@ -89,11 +89,12 @@ export default function Navbar() {
                         </div>
 
                         {/* Right Section: All Services, Search, Home, Menu */}
-                        <div className="flex items-center gap-[15px] mt-[39px]">
+                        <div className="flex items-center gap-[12px] mt-[39px]">
                             {/* All Services Button */}
                             <Button
                                 asChild
-                                className="flex items-center justify-center bg-[rgba(210,12,109,0.6)] hover:bg-[rgba(210,12,109,0.7)] text-navbar-light font-semibold w-[41px] h-[32px] p-0"
+                                className="flex items-center justify-center bg-[rgba(210,12,109,0.6)] hover:bg-[rgba(210,12,109,0.7)] text-navbar-light font-semibold
+                                w-12 h-[30px] p-0"
                                 style={{
                                     borderRadius: '4px',
                                     fontSize: '12px',
@@ -109,9 +110,9 @@ export default function Navbar() {
                             <Button
                                 size="icon"
                                 variant="ghost"
-                                className="w-[32px] h-[32px] bg-white/80 hover:bg-white/90 rounded"
+                                className="bg-white/80 size-[30px] hover:bg-white/90 rounded"
                             >
-                                <Search className="w-[22.86px] h-[21.94px] text-[#999085]" />
+                                <Search className="text-[#999085]" />
                             </Button>
 
                             {/* Home Icon */}
@@ -119,20 +120,21 @@ export default function Navbar() {
                                 href="/"
                                 className="flex items-center justify-center w-[32px] h-[32px] text-white/80 hover:text-white transition-colors"
                             >
-                                <Home className="w-[26.67px] h-[26px]" strokeWidth={2} />
+                                <Home strokeWidth={2} size={30} />
                             </Link>
 
                             {/* Menu Icon (Hamburger) */}
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button
-                                        variant="ghost"
-                                        className="flex flex-col justify-center items-center gap-[4px] w-[28px] h-[27px] p-0 hover:bg-transparent"
-                                    >
-                                        <span className="w-[22px] h-0 border-2 border-white rounded" />
-                                        <span className="w-[22px] h-0 border-2 border-white rounded" />
-                                        <span className="w-[22px] h-0 border-2 border-white rounded" />
-                                    </Button>
+                                    {/*<Button*/}
+                                    {/*    variant="ghost"*/}
+                                    {/*    className="flex flex-col justify-center items-center gap-[4px] w-[28px] h-[27px] p-0 hover:bg-transparent"*/}
+                                    {/*>*/}
+                                    {/*    <span className="w-[22px] h-0 border-2 border-white rounded" />*/}
+                                    {/*    <span className="w-[22px] h-0 border-2 border-white rounded" />*/}
+                                    {/*    <span className="w-[22px] h-0 border-2 border-white rounded" />*/}
+                                    {/*</Button>*/}
+                                    <Menu className={"text-white"} size={30}/>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent
                                     align="end"
